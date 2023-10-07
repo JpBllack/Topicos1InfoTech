@@ -7,12 +7,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Usuario extends DefalutEntity {
     
+      @NotBlank(message = "O campo 'nome' não pode estar em branco")
+    @Size(max = 100, message = "O campo 'nome' deve ter no máximo 100 caracteres")
     private String nome;
+
+    @NotBlank(message = "O campo 'login' não pode estar em branco")
+    @Size(max = 50, message = "O campo 'login' deve ter no máximo 50 caracteres")
     private String login;
+
+    @NotBlank(message = "O campo 'senha' não pode estar em branco")
+    @Size(max = 50, message = "O campo 'senha' deve ter no máximo 50 caracteres")
     private String senha;
 
     @OneToMany(cascade = CascadeType.ALL , orphanRemoval = true)

@@ -1,10 +1,12 @@
 package br.unitins.topicos1.model;
 
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Categoria extends DefalutEntity {
 
+    @NotNull
     private String nome;
 
     public String getNome() {

@@ -3,11 +3,16 @@ package br.unitins.topicos1.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.*;
 
 @Entity
 public class Produto extends DefalutEntity{
+
+    @NotBlank
+    @Size(max = 100)
     private String nome;
     private String descricao;
+    @NotNull
     private Double preco;
 
     @ManyToOne
