@@ -6,9 +6,11 @@ import java.util.List;
 import br.unitins.topicos1.dto.TelefoneDTO;
 import br.unitins.topicos1.dto.UsuarioDTO;
 import br.unitins.topicos1.dto.UsuarioResponseDTO;
+import br.unitins.topicos1.model.Perfil;
 import br.unitins.topicos1.model.Telefone;
 import br.unitins.topicos1.model.Usuario;
 import br.unitins.topicos1.repository.UsuarioRepository;
+import br.unitins.topicos1.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -27,6 +29,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         novoUsuario.setNome(dto.nome());
         novoUsuario.setLogin(dto.login());
         novoUsuario.setSenha(dto.senha());
+        novoUsuario.setPerfil(Perfil.valueOf(dto.idPerfil()));
 
         if(dto.ListaTelefone() != null && !dto.ListaTelefone().isEmpty()){
 
@@ -84,6 +87,15 @@ public class UsuarioServiceImpl implements UsuarioService {
     public List<UsuarioResponseDTO> findByAll() {
         return repository.listAll().stream()
             .map(e -> UsuarioResponseDTO.valueOf(e)).toList();
+    }
+
+    @Override
+    public UsuarioResponseDTO findByLoginAndSenha(String login, String senha) {
+        Usuario usuario = repository.findByLoginAndSenha(login, senha);
+        if (usuario == null) 
+            throw new ValidationException("login", "Login ou senha inválido");
+        
+        return UsuarioResponseDTO.valueOf(usuario);
     }
     
 }

@@ -27,8 +27,20 @@ public class Usuario extends DefalutEntity {
 
     @OneToMany(cascade = CascadeType.ALL , orphanRemoval = true)
     @JoinTable(name="usuario_telefone", joinColumns = @JoinColumn (name= "id_usuario"), inverseJoinColumns = @JoinColumn(name= "id_telefone") )
-    private List<Telefone> listaTelefone; 
+    private List<Telefone> listaTelefone;
+    
+    private Perfil perfil;
 
+
+ 
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
+    }
 
     public String getNome() {
         return nome;

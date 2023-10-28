@@ -4,15 +4,12 @@ import java.util.List;
 
 import br.unitins.topicos1.dto.EstadoDTO;
 import br.unitins.topicos1.dto.EstadoResponseDTO;
-import br.unitins.topicos1.model.Estado;
-import br.unitins.topicos1.repository.EstadoRepository;
 import br.unitins.topicos1.service.EstadoService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
-import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;

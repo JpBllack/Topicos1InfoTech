@@ -1,16 +1,12 @@
 package br.unitins.topicos1.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import br.unitins.topicos1.dto.CategoriaDTO;
 import br.unitins.topicos1.dto.CategoriaResponseDTO;
 import br.unitins.topicos1.model.Categoria;
 import br.unitins.topicos1.repository.CategoriaRepository;
-import jakarta.inject.Inject;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
 public class CategoriaService {
