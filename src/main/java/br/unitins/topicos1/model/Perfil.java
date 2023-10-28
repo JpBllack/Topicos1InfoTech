@@ -1,5 +1,8 @@
 package br.unitins.topicos1.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Perfil {
     USER(1, "User"),
     ADMIN(2, "Admin");

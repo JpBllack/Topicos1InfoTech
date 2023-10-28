@@ -19,7 +19,7 @@ import jakarta.ws.rs.core.Response;
 @Consumes(MediaType.APPLICATION_JSON)
 public class AuthResource {
 
-    @inject
+    @Inject
     HashService hashService;
 
     @Inject

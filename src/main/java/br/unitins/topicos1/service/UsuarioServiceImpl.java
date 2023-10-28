@@ -97,5 +97,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         
         return UsuarioResponseDTO.valueOf(usuario);
     }
+
+     @Override
+    public UsuarioResponseDTO findByLogin(String login) {
+        Usuario usuario = repository.findByLogin(login);
+        if (usuario == null) 
+            throw new ValidationException("login", "Login inválido");
+        
+        return UsuarioResponseDTO.valueOf(usuario);
+    }
     
 }

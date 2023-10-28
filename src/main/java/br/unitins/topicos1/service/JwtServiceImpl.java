@@ -21,7 +21,7 @@ public class JwtServiceImpl implements JwtService {
 
         // exemplo para teste
         Set<String> roles = new HashSet<String>();
-        roles.add("User");
+        roles.add(dto.perfil().getLabel());
 
         return Jwt.issuer("unitins-jwt")
                 .subject(dto.login())

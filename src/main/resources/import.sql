@@ -27,7 +27,7 @@ insert into categoria (nome) values ('Fone de ouvido');
 insert into categoria (nome) values ('Mouse');
 insert into categoria (nome) values ('hardware');
 
-insert into produto (nome,descricao,preco,categoria) values ();
+
 insert into produto (nome, descricao, preco, categoria) VALUES ('Cabo HDMI 2.0', 'Cabo HDMI de alta velocidade', 19.99, 'Cabos e Adaptadores');
 insert into produto (nome, descricao, preco, categoria) VALUES ('Fone de Ouvido Bluetooth', 'Fone de ouvido sem fio com cancelamento de ruído', 79.99, 'Fone de Ouvido');
 insert into produto (nome, descricao, preco, categoria) VALUES ('Mouse Óptico USB', 'Mouse óptico com fio para computadores', 14.99, 'Mouse');
