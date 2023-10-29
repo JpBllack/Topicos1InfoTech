@@ -37,7 +37,7 @@ public class AuthResource {
 
         String token = jwtService.generateJwt(result);
 
-        return Response.ok().header("Autorization", token).build();
+        return Response.ok().header("Authorization", token).build();
     }
 
 }

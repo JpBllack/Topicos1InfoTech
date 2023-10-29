@@ -18,9 +18,9 @@ insert into cidade (nome, id_estado) values('Rio de Janeiro', 3);
 insert into cidade (nome, id_estado) values('São Paulo', 4);
 
  
-insert into usuario (nome, login, senha) values ('John Smith', 'jsmith', '123');
-insert into usuario (nome, login, senha) values ('Will Smith', 'Will', '456');
-insert into usuario (nome, login, senha) values ('Jaden Smith', 'Jaden', '789');
+insert into usuario (nome, login, senha, perfil) values ('John Smith', 'js', '123',1);
+insert into usuario (nome, login, senha, perfil) values ('Will Smith', 'Will', '123',2);
+insert into usuario (nome, login, senha, perfil) values ('Jaden Smith', 'Jaden', '123',1);
 
 insert into categoria (nome) values ('Cabos e Adptadores');
 insert into categoria (nome) values ('Fone de ouvido');
