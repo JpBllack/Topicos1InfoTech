@@ -6,7 +6,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.*;
 
 @Entity
-public class Produto extends DefalutEntity{
+public class Produto extends DefaultEntity{
 
     @NotBlank
     @Size(max = 100)

@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.validation.constraints.*;
 
 @Entity
-public class Categoria extends DefalutEntity {
+public class Categoria extends DefaultEntity {
 
     @NotNull
     private String nome;

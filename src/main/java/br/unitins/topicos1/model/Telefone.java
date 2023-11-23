@@ -3,7 +3,7 @@ package br.unitins.topicos1.model;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Telefone extends DefalutEntity {
+public class Telefone extends DefaultEntity {
 
     private String CodigoArea;
     private String numero;

@@ -1,12 +1,11 @@
 package br.unitins.topicos1.model;
-
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
 
 @Entity
-public class Estado extends DefalutEntity {
+public class Estado extends DefaultEntity {
 
 
     @Column(length = 60)
