@@ -31,8 +31,18 @@ public class Usuario extends DefaultEntity {
     
     private Perfil perfil;
 
+    private String nomeImagem;
+
 
  
+
+    public String getNomeImagem() {
+        return nomeImagem;
+    }
+
+    public void setNomeImagem(String nomeImagem) {
+        this.nomeImagem = nomeImagem;
+    }
 
     public Perfil getPerfil() {
         return perfil;
