@@ -7,8 +7,10 @@ import jakarta.ws.rs.core.Response;
 import org.acme.dto.EnderecoDTO;
 import org.acme.dto.EnderecoResponseDTO;
 import org.acme.model.Endereco;
+import org.acme.model.Usuario;
 import org.acme.repository.CidadeRepository;
 import org.acme.repository.EnderecoRepository;
+import org.acme.repository.UsuarioRepository;
 import org.acme.service.EnderecoService;
 
 import java.util.List;
@@ -22,6 +24,9 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     @Inject
     CidadeRepository cidadeRepository;
+
+    @Inject
+    UsuarioRepository usuarioRepository;
 
     @Override
     public List<EnderecoResponseDTO> getAll() {
@@ -37,7 +42,7 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     @Transactional
     @Override
-    public Response insert(EnderecoDTO dto) {
+    public EnderecoResponseDTO insert(EnderecoDTO dto, Long idUsuario) {
         Endereco endereco = new Endereco();
         endereco.setLogradouro(dto.logradouro());
         endereco.setNumero(dto.numero());
@@ -45,8 +50,9 @@ public class EnderecoServiceImpl implements EnderecoService {
         endereco.setBairro(dto.bairro());
         endereco.setCidade(cidadeRepository.findById(dto.idCidade()));
         endereco.setCep(dto.cep());
+        endereco.setUsuario(usuarioRepository.findById(idUsuario));
         repository.persist(endereco);
-        return Response.ok(new EnderecoResponseDTO(endereco)).build();
+        return new EnderecoResponseDTO(endereco);
     }
 
     @Transactional

@@ -49,6 +49,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     public List<UsuarioResponseDTO> getNome(String nome) {
         return repository.findByNome(nome).stream().map(UsuarioResponseDTO::new).collect(Collectors.toList());
     }
+    @Override
+    public UsuarioResponseDTO getCpf(String cpf) {
+        return new UsuarioResponseDTO(repository.findByCpf(cpf));
+    }
+
 
     @Override
     public UsuarioResponseDTO updateEmail(Long id, UsuarioUpdateEmailDTO email) {

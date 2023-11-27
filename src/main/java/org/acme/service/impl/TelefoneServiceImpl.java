@@ -8,6 +8,7 @@ import org.acme.dto.TelefoneDTO;
 import org.acme.dto.TelefoneResponseDTO;
 import org.acme.model.Telefone;
 import org.acme.repository.TelefoneRepository;
+import org.acme.repository.UsuarioRepository;
 import org.acme.service.TelefoneService;
 
 import java.util.List;
@@ -17,6 +18,9 @@ import java.util.stream.Collectors;
 public class TelefoneServiceImpl implements TelefoneService {
     @Inject
     TelefoneRepository repository;
+
+    @Inject
+    UsuarioRepository usuarioRepository;
 
     @Override
     public List<TelefoneResponseDTO> getAll() {
@@ -39,12 +43,13 @@ public class TelefoneServiceImpl implements TelefoneService {
 
     @Transactional
     @Override
-    public Response insert(TelefoneDTO dto) {
+    public TelefoneResponseDTO insert(TelefoneDTO dto, Long idUsuario) {
         Telefone telefone = new Telefone();
         telefone.setCodigoArea(dto.codigoArea());
         telefone.setNumero(dto.numero());
+        telefone.setUsuario(usuarioRepository.findById(idUsuario));
         repository.persist(telefone);
-        return Response.ok(new TelefoneResponseDTO(telefone)).build();
+        return new TelefoneResponseDTO(telefone);
     }
 
     @Transactional

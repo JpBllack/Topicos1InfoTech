@@ -7,6 +7,7 @@ import jakarta.ws.rs.core.Response;
 import org.acme.dto.VendaDTO;
 import org.acme.dto.VendaResponseDTO;
 import org.acme.model.Venda;
+import org.acme.repository.EnderecoRepository;
 import org.acme.repository.ItemVendaRepository;
 import org.acme.repository.VendaRepository;
 import org.acme.service.VendaService;
@@ -22,6 +23,9 @@ public class VendaServiceImpl implements VendaService {
 
     @Inject
     ItemVendaRepository itemVendaRepository;
+
+    @Inject
+    EnderecoRepository enderecoRepository;
 
     @Override
     public List<VendaResponseDTO> getAll() {
@@ -42,7 +46,9 @@ public class VendaServiceImpl implements VendaService {
         venda.setDesconto(dto.desconto());
         dto.itemVendaList().stream()
                 .map(i -> venda.getItemVendaList().add(itemVendaRepository.findById(i)));
+        venda.setEndereco(enderecoRepository.findById(dto.idEndereco()));
         repository.persist(venda);
+
         return Response.ok(new VendaResponseDTO(venda)).build();
     }
 

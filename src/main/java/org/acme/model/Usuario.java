@@ -1,5 +1,6 @@
 package org.acme.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -28,9 +29,6 @@ public class Usuario extends DefaultyEntity {
     @NotBlank(message = "O campo 'senha' não pode estar em branco")
     private String senha;
 
-    @OneToOne
-    @JoinColumn(name = "usuario_telefone")
-    private Telefone telefone;
     
     @Column
     @NotBlank(message = "O campo 'cpf' não pode estar em branco")
@@ -42,17 +40,7 @@ public class Usuario extends DefaultyEntity {
     @Column(name = "perfil", length = 30)
     private Set<Perfil> perfis;
 
-    @OneToMany
-    @JoinColumn(name = "usuario_endereco")
-    private List<Endereco> enderecos;
 
-    public List<Endereco> getEnderecos() {
-        return enderecos;
-    }
-
-    public void setEnderecos(List<Endereco> enderecos) {
-        this.enderecos = enderecos;
-    }
 
     public String getEmail() {
         return email;
@@ -92,14 +80,6 @@ public class Usuario extends DefaultyEntity {
 
     public void setSenha(String senha) {
         this.senha = senha;
-    }
-
-    public Telefone getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(Telefone telefone) {
-        this.telefone = telefone;
     }
 
     public String getCpf() {

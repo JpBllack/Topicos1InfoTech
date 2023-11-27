@@ -17,6 +17,8 @@ public interface UsuarioService {
 
     public List<UsuarioResponseDTO> getNome(String nome);
 
+    public UsuarioResponseDTO getCpf(String cpf);
+
     public UsuarioResponseDTO updateEmail(Long id, UsuarioUpdateEmailDTO email);
 
     public UsuarioResponseDTO updateNome(Long id, UsuarioUpdateNomeDTO nome);

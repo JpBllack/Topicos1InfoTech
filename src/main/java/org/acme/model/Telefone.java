@@ -1,15 +1,24 @@
 package org.acme.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Telefone extends DefaultyEntity {
 
+    @OneToOne
+    @JoinColumn(name = "telefone_usuario")
+    private Usuario usuario;
     private String CodigoArea;
     private String numero;
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
     public String getNumero() {
         return numero;

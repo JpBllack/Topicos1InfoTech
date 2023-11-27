@@ -19,6 +19,18 @@ public class Endereco extends DefaultyEntity{
 
     private String cep;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_enderedo")
+    private Usuario usuario;
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     public Cidade getCidade() {
         return cidade;
     }

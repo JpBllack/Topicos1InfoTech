@@ -21,8 +21,16 @@ public class Venda extends DefaultyEntity {
     private Pagamento pagamento;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_venda")
-    private Usuario usuario;
+    @JoinColumn(name = "endereco_venda")
+    private Endereco endereco;
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
 
     public Pagamento getPagamento() {
         return pagamento;
@@ -30,14 +38,6 @@ public class Venda extends DefaultyEntity {
 
     public void setPagamento(Pagamento pagamento) {
         this.pagamento = pagamento;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
     }
 
     public Double getValorTotal() {

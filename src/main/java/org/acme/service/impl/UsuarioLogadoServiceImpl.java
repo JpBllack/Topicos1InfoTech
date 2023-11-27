@@ -5,9 +5,14 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import org.acme.dto.*;
+import org.acme.model.Telefone;
 import org.acme.model.Usuario;
+import org.acme.repository.EnderecoRepository;
+import org.acme.repository.TelefoneRepository;
 import org.acme.repository.UsuarioRepository;
+import org.acme.service.EnderecoService;
 import org.acme.service.HashService;
+import org.acme.service.TelefoneService;
 import org.acme.service.UsuarioLogadoService;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
@@ -21,6 +26,18 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
     UsuarioRepository usuarioRepository;
     @Inject
     HashService hash;
+
+    @Inject
+    TelefoneService telefoneService;
+
+    @Inject
+    TelefoneRepository telefoneRepository;
+
+    @Inject
+    EnderecoService enderecoService;
+
+    @Inject
+    EnderecoRepository enderecoRepository;
 
     @Transactional
     @Override
@@ -91,6 +108,19 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
             return null;
         }
     }
+
+    @Override
+    public Response insertTelefone(TelefoneDTO telefoneDTO) {
+        TelefoneResponseDTO t = telefoneService.insert(telefoneDTO, usuarioRepository.findByIdModificado(jsonWebToken.getSubject()).getId());
+        return Response.ok(t).build();
+    }
+
+    @Override
+    public Response insertEndereco(EnderecoDTO enderecoDTO) {
+        EnderecoResponseDTO e = enderecoService.insert(enderecoDTO, usuarioRepository.findByIdModificado(jsonWebToken.getSubject()).getId());
+        return Response.ok(e).build();
+    }
+
 
     @Transactional
     @Override

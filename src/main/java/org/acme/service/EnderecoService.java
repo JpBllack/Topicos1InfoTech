@@ -12,7 +12,7 @@ public interface EnderecoService {
 
     EnderecoResponseDTO getId(long id);
 
-    Response insert(EnderecoDTO enderecoDTO);
+    EnderecoResponseDTO insert(EnderecoDTO enderecoDTO, Long idUsuario);
 
     Response delete(long id);
 }

@@ -1,10 +1,8 @@
 package org.acme.service;
 
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.core.Response;
 import org.acme.dto.*;
 
-@ApplicationScoped
 public interface UsuarioLogadoService {
     public UsuarioResponseDTO updateSenha(MudarSenhaDTO senha);
 
@@ -15,6 +13,9 @@ public interface UsuarioLogadoService {
     public UsuarioResponseDTO updateEmail(UsuarioUpdateEmailDTO email);
 
     public UsuarioResponseDTO getPerfilUsuarioLogado();
+
+    public Response insertTelefone(TelefoneDTO telefoneDTO);
+    public Response insertEndereco(EnderecoDTO enderecoDTO);
 
     public Response deleteOn();
 }
