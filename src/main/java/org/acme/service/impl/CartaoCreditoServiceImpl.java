@@ -39,6 +39,8 @@ public class CartaoCreditoServiceImpl implements CartaoCreditoService {
         cartaoCredito.setDataValidade(dto.dataValidade());
         cartaoCredito.setCvv(dto.cvv());
         cartaoCredito.setBandeiraCartao(dto.bandeiraCartao());
+        cartaoCredito.setTipo("cartao credito");
+        cartaoCredito.setValor(dto.valor());
         repository.persist(cartaoCredito);
         return Response.ok(new CartaoCreditoResponseDTO(cartaoCredito)).build();
     }

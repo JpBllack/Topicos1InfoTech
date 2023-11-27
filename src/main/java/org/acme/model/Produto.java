@@ -20,6 +20,8 @@ public class Produto extends DefaultyEntity{
     @NotNull
     private Double valor;
 
+    private String imagem;
+
     @Column(name = "quantidade_estoque")
     private Integer quantEstoque;
 
@@ -30,6 +32,14 @@ public class Produto extends DefaultyEntity{
     @OneToMany
     @JoinColumn(name = "produto_avaliacao")
     private List<Avaliacao> avaliacaoList;
+
+    public String getImagem() {
+        return imagem;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
 
     public List<Avaliacao> getAvaliacaoList() {
         return avaliacaoList;

@@ -2,9 +2,16 @@ package org.acme.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.acme.model.Produto;
 import org.acme.model.Telefone;
+
+import java.util.List;
 
 @ApplicationScoped
 public class TelefoneRepository implements PanacheRepository<Telefone> {
-
+    public List<Telefone> findByCodigoArea(String codigoArea){
+        if (codigoArea == null)
+            return null;
+        return find("UPPER(codigoArea) LIKE ?1 ", "%"+codigoArea.toUpperCase()+"%").list();
+    }
 }
