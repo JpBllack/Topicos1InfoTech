@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Venda extends DefaultyEntity{
+public class Venda extends DefaultyEntity {
 
     private Double valorTotal;
 
@@ -16,9 +16,29 @@ public class Venda extends DefaultyEntity{
     @JoinColumn(name = "venda_itemvenda")
     private List<ItemVenda> itemVendaList;
 
+    @OneToOne
+    @JoinColumn(name = "venda_pagamento")
+    private Pagamento pagamento;
+
     @ManyToOne
     @JoinColumn(name = "usuario_venda")
     private Usuario usuario;
+
+    public Pagamento getPagamento() {
+        return pagamento;
+    }
+
+    public void setPagamento(Pagamento pagamento) {
+        this.pagamento = pagamento;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 
     public Double getValorTotal() {
         return valorTotal;
