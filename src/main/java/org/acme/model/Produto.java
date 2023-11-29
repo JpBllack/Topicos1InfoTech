@@ -3,11 +3,24 @@ package org.acme.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Produto extends DefaultyEntity{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     @NotBlank(message = "Informe o nome do produto")
     @Size(max = 100, message = "o campo 'nome' tem que ter no maximo 100 caracteres")
@@ -42,6 +55,9 @@ public class Produto extends DefaultyEntity{
     }
 
     public List<Avaliacao> getAvaliacaoList() {
+        if(avaliacaoList == null){
+            avaliacaoList = new ArrayList<>();
+        }
         return avaliacaoList;
     }
 

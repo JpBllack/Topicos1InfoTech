@@ -4,13 +4,8 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
-@MappedSuperclass //Falta alguma anotação
+@MappedSuperclass
 public class DefaultyEntity {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
 
     private LocalDateTime dataInclusao;
 
@@ -26,14 +21,6 @@ public class DefaultyEntity {
 
     public void setDataInclusao(LocalDateTime dataInclusao) {
         this.dataInclusao = dataInclusao;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
 }

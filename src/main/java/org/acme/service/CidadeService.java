@@ -14,7 +14,7 @@ public interface CidadeService {
 
     public CidadeResponseDTO update(CidadeDTO cidadeDTO, Long id);
 
-    public void delete(Long id);
+    public Response delete(Long id);
 
     public CidadeResponseDTO findById(Long id);
 

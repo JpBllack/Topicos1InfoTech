@@ -2,10 +2,7 @@ package org.acme.model;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -13,12 +10,11 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Avaliacao extends DefaultyEntity{
-    
-    @Size(max = 2)
-    @NotBlank
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @NotNull
     private Integer nota;
-
 
     @Size(max = 600, message = "O limite de caracteres do campo 'comentario' é de 600!")
     private String comentario;
@@ -35,5 +31,12 @@ public class Avaliacao extends DefaultyEntity{
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }
-    
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

@@ -1,4 +1,6 @@
 package org.acme.dto;
 
-public record CategoriaDTO(String nome) {
+import jakarta.validation.constraints.NotBlank;
+
+public record CategoriaDTO(@NotBlank String nome) {
 }

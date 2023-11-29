@@ -10,12 +10,15 @@ import org.acme.model.ItemVenda;
 import org.acme.repository.ItemVendaRepository;
 import org.acme.repository.ProdutoRepository;
 import org.acme.service.ItemVendaService;
+import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ItemVendaServiceImpl implements ItemVendaService {
+
+    public static final Logger LOG = Logger.getLogger(ItemVendaServiceImpl.class);
 
     @Inject
     ItemVendaRepository repository;
@@ -25,37 +28,70 @@ public class ItemVendaServiceImpl implements ItemVendaService {
 
     @Override
     public List<ItemVendaResponseDTO> getAll() {
-        return repository.findAll().stream()
-                .map(ItemVendaResponseDTO::new)
-                .collect(Collectors.toList());
+        try {
+            LOG.info("Requisição getAll()");
+
+            return repository.findAll().stream()
+                    .map(ItemVendaResponseDTO::new)
+                    .collect(Collectors.toList());
+        }catch (Exception e){
+            LOG.error("Erro ao rodar Requisição getAll()");
+            return null;
+        }
     }
 
     @Override
     public ItemVendaResponseDTO getId(long id) {
-        return new ItemVendaResponseDTO(repository.findById(id));
+        try {
+            LOG.info("Requisição getId()");
+
+            return new ItemVendaResponseDTO(repository.findById(id));
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição getId()");
+            return null;
+        }
     }
 
     @Transactional
     @Override
     public Response insert(ItemVendaDTO dto) {
-        ItemVenda itemVenda = new ItemVenda();
-        itemVenda.setQuantidade(dto.quantidade());
-        itemVenda.setValorUnitario(dto.valorUnitario());
-        itemVenda.setProduto(produtoRepository.findById(dto.idProduto()));
-        itemVenda.setValorTotal(dto.valorUnitario() * dto.quantidade());
-        repository.persist(itemVenda);
-        return Response.ok(new ItemVendaResponseDTO(itemVenda)).build();
+
+        try {
+            LOG.info("Requisição insert()");
+
+            ItemVenda itemVenda = new ItemVenda();
+            itemVenda.setQuantidade(dto.quantidade());
+            itemVenda.setValorUnitario(dto.valorUnitario());
+            itemVenda.setProduto(produtoRepository.findById(dto.idProduto()));
+            itemVenda.setValorTotal(dto.valorUnitario() * dto.quantidade());
+            repository.persist(itemVenda);
+            return Response.ok(new ItemVendaResponseDTO(itemVenda)).build();
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição insert()");
+            return Response.noContent().build();
+        }
     }
 
     @Transactional
     @Override
     public Response delete(long id) {
-        ItemVenda itemVenda = repository.findById(id);
-        if (itemVenda != null) {
-            repository.delete(itemVenda);
-            return Response.ok().build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+        try {
+            LOG.info("Requisição delete()");
+            ItemVenda itemVenda = repository.findById(id);
+            if (itemVenda != null) {
+                repository.delete(itemVenda);
+                return Response.ok().build();
+            } else {
+                throw new Exception("itemVenda não encontrado!");
+            }
+        } catch (Exception e) {
+
+            LOG.info("erro ao rodar Requisição delete() - " + e.getMessage());
+            return Response.notModified(e.getMessage()).build();
+
         }
     }
 }

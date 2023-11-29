@@ -10,9 +10,9 @@ public interface AvaliacaoService {
 
     List<AvaliacaoResponseDTO> getAll();
 
-    AvaliacaoResponseDTO getId(long id);
+    AvaliacaoResponseDTO getId(Long id);
 
     Response insert(AvaliacaoDTO avaliacaoDTO);
 
-    Response delete(long id);
+    Response delete(Long id);
 }

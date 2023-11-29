@@ -10,9 +10,9 @@ public interface EnderecoService {
 
     List<EnderecoResponseDTO> getAll();
 
-    EnderecoResponseDTO getId(long id);
+    EnderecoResponseDTO getId(Long id);
 
-    EnderecoResponseDTO insert(EnderecoDTO enderecoDTO, Long idUsuario);
+    Response insert(String idUsuario, EnderecoDTO enderecoDTO);
 
     Response delete(long id);
 }

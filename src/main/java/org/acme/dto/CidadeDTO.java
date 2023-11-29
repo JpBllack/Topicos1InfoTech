@@ -1,8 +1,11 @@
 package org.acme.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public record CidadeDTO(
-    String nome,
-    Long idEstado
+    @NotBlank @Size(min = 2) String nome,
+    @NotBlank Long idEstado
 ) {
     
 }

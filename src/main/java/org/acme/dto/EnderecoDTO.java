@@ -1,11 +1,13 @@
 package org.acme.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record EnderecoDTO(
         String logradouro,
         String numero,
-        String complemento,
+        @NotBlank String complemento,
         String bairro,
-        Long idCidade,
-        String cep
+        @NotBlank Long idCidade,
+        @NotBlank String cep
 ) {
 }

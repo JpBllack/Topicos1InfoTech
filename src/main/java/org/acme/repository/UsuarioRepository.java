@@ -1,13 +1,14 @@
 package org.acme.repository;
 
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.acme.model.Usuario;
 
 import java.util.List;
 
 @ApplicationScoped
-public class UsuarioRepository implements PanacheRepository<Usuario> {
+public class UsuarioRepository implements PanacheRepositoryBase<Usuario, String> {
 
     public List<Usuario> findByNome(String nome){
         if (nome == null)
@@ -35,11 +36,19 @@ public class UsuarioRepository implements PanacheRepository<Usuario> {
 
         return find("cpf = ?1", cpf).firstResult();
     }
-    public Usuario findByIdModificado(String id){
-        if (id == null)
+
+    public Usuario findByEmail(String email){
+        if (email == null)
             return null;
 
-        return find("id = ?1", id).firstResult();
+        return find("email = ?1", email).firstResult();
+    }
+
+    public Usuario findByLogin(String login){
+        if (login == null)
+            return null;
+
+        return find("login = ?1", login).firstResult();
     }
 
 }

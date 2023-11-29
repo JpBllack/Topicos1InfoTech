@@ -5,16 +5,21 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import org.acme.dto.*;
+import org.acme.model.Perfil;
 import org.acme.model.Usuario;
 import org.acme.repository.UsuarioRepository;
 import org.acme.service.HashService;
 import org.acme.service.UsuarioService;
+import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class UsuarioServiceImpl implements UsuarioService {
+
+    public static final Logger LOG = Logger.getLogger(UsuarioServiceImpl.class);
+
     @Inject
     UsuarioRepository repository;
 
@@ -26,21 +31,35 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public List<UsuarioResponseDTO> getAll() {
-        return repository.findAll().stream().map(UsuarioResponseDTO::new).collect(Collectors.toList());
+        try {
+            LOG.info("Requisição getAll()");
+
+            return repository.findAll().stream().map(UsuarioResponseDTO::new).collect(Collectors.toList());
+        }catch (Exception e){
+            LOG.error("Erro ao rodar Requisição getAll()");
+            return null;
+        }
     }
 
     @Override
-    public UsuarioResponseDTO getId(long id) {
-        return new UsuarioResponseDTO(repository.findById(id));
+    public UsuarioResponseDTO getId(String id) {
+        try {
+            LOG.info("Requisição getId()");
+            return new UsuarioResponseDTO(repository.findById(id));
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição getId()");
+            return null;
+        }
     }
 
     @Override
     public Usuario findByLoginAndSenha(String login, String senha) {
-        String s = hash.getHashSenha(senha);
         Usuario usuario = new Usuario();
-        usuario = repository.findByEmailAndSenha(login, s);
+        usuario = repository.findByEmailAndSenha(login, senha);
         if(usuario == null){
-            usuario = repository.findByLoginAndSenha(login, s);
+            usuario = repository.findByLoginAndSenha(login, senha);
         }
         return usuario;
     }
@@ -56,15 +75,17 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 
     @Override
-    public UsuarioResponseDTO updateEmail(Long id, UsuarioUpdateEmailDTO email) {
-        Usuario u = new Usuario();
-        u = repository.findById(id);
+    @Transactional
+    public UsuarioResponseDTO updateEmail(String id, UsuarioUpdateEmailDTO email) {
+        Usuario u = repository.findById(id);
         u.setEmail(email.email());
-        return new UsuarioResponseDTO(u);
+        UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO(u);
+        return usuarioResponseDTO;
     }
 
     @Override
-    public UsuarioResponseDTO updateNome(Long id, UsuarioUpdateNomeDTO nome) {
+    @Transactional
+    public UsuarioResponseDTO updateNome(String id, UsuarioUpdateNomeDTO nome) {
         Usuario u = new Usuario();
         u = repository.findById(id);
         u.setEmail(nome.nome());
@@ -73,7 +94,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Transactional
     @Override
-    public UsuarioResponseDTO updateLogin(Long id, UsuarioUpdateLoginDTO login) {
+    public UsuarioResponseDTO updateLogin(String id, UsuarioUpdateLoginDTO login) {
         Usuario u = new Usuario();
         u = repository.findById(id);
         u.setEmail(login.login());
@@ -89,23 +110,58 @@ public class UsuarioServiceImpl implements UsuarioService {
         return new UsuarioResponseDTO(u);
     }
 
-    @Transactional
     @Override
-    public Response insert(UsuarioDTO dto) {
-        Usuario u = new Usuario();
-        u.setNome(dto.nome());
-        u.setCpf(dto.cpf());
-        u.setEmail(dto.email());
-        u.setSenha(hash.getHashSenha(dto.senha()));
+    @Transactional
+    public Response promoverAdmin(String id) {
+        Usuario u = repository.findById(id);
+        u.getPerfis().add(Perfil.ADMIN);
         return Response.ok(new UsuarioResponseDTO(u)).build();
     }
 
     @Transactional
     @Override
-    public Response delete(Long id) {
-        Usuario u = new Usuario();
-        u = repository.findById(id);
-        repository.deleteById(u.getId());
-        return Response.ok().build();
+    public Response insert(UsuarioDTO dto) {
+
+        try {
+            LOG.info("Requisição insert()");
+
+            Usuario u = new Usuario();
+            u.setNome(dto.nome());
+            u.setCpf(dto.cpf());
+            u.setEmail(dto.email());
+            u.setSenha(hash.getHashSenha(dto.senha()));
+            u.setLogin(dto.login());
+            u.getPerfis().add(Perfil.USER);
+
+            Usuario teste = repository.findByEmail(dto.email());
+            if(teste != null){
+                throw new Exception("usuario com esse email ja existe");
+            }
+
+            repository.persist(u);
+            return Response.ok(new UsuarioResponseDTO(u)).build();
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição insert()");
+            return Response.noContent().entity(e.getMessage()).build();
+        }
+    }
+
+    @Transactional
+    @Override
+    public Response delete(String id) {
+        try {
+            LOG.info("Requisição delete()");
+            Usuario u = new Usuario();
+            u = repository.findById(id);
+            repository.deleteById(u.getId());
+            return Response.ok().build();
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição delete() - " + e.getMessage());
+            return Response.notModified(e.getMessage()).build();
+        }
+
     }
 }

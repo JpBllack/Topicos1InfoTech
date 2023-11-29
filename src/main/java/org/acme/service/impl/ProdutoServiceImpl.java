@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import org.acme.dto.AvaliacaoResponseDTO;
 import org.acme.dto.ProdutoDTO;
 import org.acme.dto.ProdutoResponseDTO;
 import org.acme.form.ImageForm;
@@ -60,9 +61,14 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     }
 
+    @Override
+    public List<AvaliacaoResponseDTO> getAvaliacao(Long id) {
+        return repository.findById(id).getAvaliacaoList().stream().map(AvaliacaoResponseDTO::new).collect(Collectors.toList());
+    }
+
 
     @Override
-    public ProdutoResponseDTO getId(long id) {
+    public ProdutoResponseDTO getId(Long id) {
         try {
             LOG.info("Requisição Produto.getId()");
 
@@ -105,14 +111,14 @@ public class ProdutoServiceImpl implements ProdutoService {
             return Response.ok(new ProdutoResponseDTO(p)).build();
         } catch (Exception e) {
             LOG.error("Erro ao rodar Requisição Produto.insert()");
-            return null;
+            return Response.noContent().build();
         }
 
     }
 
     @Override
     @Transactional
-    public Response update(long id, ProdutoDTO produto) {
+    public Response update(Long id, ProdutoDTO produto) {
         try {
             LOG.info("Requisição Produto.update()");
 

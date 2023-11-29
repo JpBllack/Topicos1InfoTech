@@ -1,0 +1,90 @@
+package org.acme.resource;
+
+import jakarta.annotation.security.PermitAll;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import org.acme.dto.*;
+import org.acme.service.UsuarioService;
+
+import java.util.List;
+
+@Path("/usuario")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public class UsuarioResource {
+    @Inject
+    UsuarioService service;
+
+    @GET
+    @PermitAll
+    public List<UsuarioResponseDTO> getAll(){
+        return service.getAll();
+    }
+    @GET
+    @PermitAll
+    @Path("/{id}")
+    public UsuarioResponseDTO getId(@PathParam("id") String id){
+        return service.getId(id);
+    }
+
+    @GET
+    @PermitAll
+    @Path("/nome/{nome}")
+    public List<UsuarioResponseDTO> getNome(@PathParam("nome") String nome){
+        return service.getNome(nome);
+    }
+
+    @POST
+    @PermitAll
+    public Response insert(UsuarioDTO dto){
+        return service.insert(dto);
+    }
+
+    @DELETE
+    @PermitAll
+    @Path("/{id}")
+    public Response delete(@PathParam("id") String id){
+        return service.delete(id);
+    }
+
+    @GET
+    @PermitAll
+    @Path("/cpf/{cpf}")
+    public UsuarioResponseDTO getCpf(@PathParam("cpf")String cpf){
+        return service.getCpf(cpf);
+    }
+
+    @PATCH
+    @PermitAll
+    @Path("/update/email/{id}")
+    public UsuarioResponseDTO updateEmail(@PathParam("id") String id, UsuarioUpdateEmailDTO email){
+        return service.updateEmail(id, email);
+    }
+    @PATCH
+    @PermitAll
+    @Path("/update/nome/{id}")
+    public UsuarioResponseDTO updateNome(@PathParam("id") String id, UsuarioUpdateNomeDTO nome){
+        return service.updateNome(id, nome);
+    }
+    @PATCH
+    @PermitAll
+    @Path("/update/login/{id}")
+    public UsuarioResponseDTO updateLogin(@PathParam("id") String id, UsuarioUpdateLoginDTO login){
+        return service.updateLogin(id, login);
+    }
+    @PATCH
+    @PermitAll
+    @Path("/update/senha/{id}")
+    public UsuarioResponseDTO updateSenha(MudarSenhaDTO senha){
+        return service.updateSenha(senha);
+    }
+
+    @PATCH
+    @PermitAll
+    @Path("/promoveradmin/{id}")
+    public Response promoverAdmin(@PathParam("id") String id){
+        return service.promoverAdmin(id);
+    }
+}

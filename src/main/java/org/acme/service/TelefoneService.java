@@ -13,7 +13,7 @@ public interface TelefoneService {
 
     List<TelefoneResponseDTO> getCodigoArea(String codigoArea);
 
-    TelefoneResponseDTO insert(TelefoneDTO telefoneDTO, Long idUsuario);
+    Response insert(TelefoneDTO telefoneDTO, String idUsuario);
 
 
     Response update(Long id, TelefoneDTO telefoneDTO);

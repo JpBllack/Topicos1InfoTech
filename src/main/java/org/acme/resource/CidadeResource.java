@@ -1,35 +1,26 @@
 package org.acme.resource;
 
+import jakarta.annotation.security.PermitAll;
+import jakarta.ws.rs.*;
 import org.acme.dto.CidadeDTO;
 import org.acme.dto.CidadeResponseDTO;
 import org.acme.repository.EstadoRepository;
 import org.acme.service.CidadeService;
-import org.acme.service.impl.CidadeServiceImpl;
 
 import jakarta.inject.Inject;
-import jakarta.transaction.Status;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/cidades")
+import java.util.List;
+
+@Path("/cidade")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CidadeResource {
     
     @Inject
     CidadeService service;
-
-    @Inject
-    EstadoRepository estadoRepository;
-
     
     @POST
     public Response insert(CidadeDTO cidadeDTO){
@@ -38,16 +29,37 @@ public class CidadeResource {
 
     @PUT
     @Transactional
-    @Path("/{id}")
+    @Path("/update/{id}")
     public Response update(CidadeDTO cidadeDTO, @PathParam("id") Long id) {
     service.update(cidadeDTO, id);
     return Response.ok().build();
 
-    }   
+    }
+    @GET
+    @PermitAll
+    @Path("/{id}")
+    public CidadeResponseDTO getId(@PathParam("id") long id){
+        return service.findById(id);
+    }
+    @GET
+    @PermitAll
+    @Path("/{nome}")
+    public List<CidadeResponseDTO> getINome(@PathParam("nome") String nome){
+        return service.findByNome(nome);
+    }
 
     @GET
+    @PermitAll
     public Response findAll() {
         return Response.ok(service.findAll()).build();
     }
+
+    @DELETE
+    @PermitAll
+    @Path("/delete/{id}")
+    public Response delete(@PathParam("id") long id){
+        return service.delete(id);
+    }
+
 
 }

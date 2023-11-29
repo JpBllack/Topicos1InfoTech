@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.acme.dto.CidadeDTO;
 import org.acme.dto.CidadeResponseDTO;
+import org.acme.model.Categoria;
 import org.acme.model.Cidade;
 import org.acme.repository.CidadeRepository;
 import org.acme.repository.EstadoRepository;
@@ -15,10 +16,11 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
+import org.jboss.logging.Logger;
 
 @ApplicationScoped
 public class CidadeServiceImpl implements CidadeService{
-
+    public static final Logger LOG = Logger.getLogger(CidadeServiceImpl.class);
     @Inject
     CidadeRepository repository;
 
@@ -28,7 +30,9 @@ public class CidadeServiceImpl implements CidadeService{
     @Override
     @Transactional
     public Response insert(CidadeDTO dtoCidade) {
+
         try {
+            LOG.info("Requisição insert()");
             Cidade novaCidade = new Cidade();
             novaCidade.setNome(dtoCidade.nome());
             novaCidade.setEstado(estadoRepository.findById(dtoCidade.idEstado()));
@@ -36,10 +40,13 @@ public class CidadeServiceImpl implements CidadeService{
                 throw new Exception("Estado não pode ser nulo");
             }
             repository.persist(novaCidade);
-        
+
             return Response.ok(new CidadeResponseDTO(novaCidade)).build();
-        } catch (Exception e) {
-            return Response.notModified(e.toString()).build();
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição insert()");
+            return Response.noContent().build();
         }
         
     }
@@ -57,14 +64,37 @@ public class CidadeServiceImpl implements CidadeService{
 
     @Override
     @Transactional //Anuncia mudança no banco de dados
-    public void delete(Long id) {
-        if (!repository.deleteById(id))
-            throw new NotFoundException("Error");
+    public Response delete(Long id) {
+
+
+        try {
+            LOG.info("Requisição delete()");
+            Cidade cidade = repository.findById(id);
+            if (cidade != null) {
+                repository.delete(cidade);
+                return Response.ok().build();
+            } else {
+                throw new Exception("não encontrado!");
+            }
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição delete()");
+            return Response.notModified(e.getMessage()).build();
+        }
+
     }
 
     @Override
     public CidadeResponseDTO findById(Long id) {
-        return new CidadeResponseDTO(repository.findById(id));
+        try {
+            LOG.info("Requisição getId()");
+            return new CidadeResponseDTO(repository.findById(id));
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição getId()");
+            return null;
+        }
 
        }
 
@@ -76,7 +106,14 @@ public class CidadeServiceImpl implements CidadeService{
 
     @Override
     public List<CidadeResponseDTO> findAll() {
-        return repository.findAll().stream().map(cidade -> new CidadeResponseDTO(cidade)).collect(Collectors.toList());
+        try {
+            LOG.info("Requisição getAll()");
+
+            return repository.findAll().stream().map(cidade -> new CidadeResponseDTO(cidade)).collect(Collectors.toList());
+        }catch (Exception e){
+            LOG.error("Erro ao rodar Requisição getAll()");
+            return null;
+        }
     }
     
 }

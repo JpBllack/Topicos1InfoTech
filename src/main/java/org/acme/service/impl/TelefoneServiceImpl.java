@@ -10,12 +10,16 @@ import org.acme.model.Telefone;
 import org.acme.repository.TelefoneRepository;
 import org.acme.repository.UsuarioRepository;
 import org.acme.service.TelefoneService;
+import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TelefoneServiceImpl implements TelefoneService {
+
+    public static final Logger LOG = Logger.getLogger(TelefoneServiceImpl.class);
+
     @Inject
     TelefoneRepository repository;
 
@@ -24,14 +28,29 @@ public class TelefoneServiceImpl implements TelefoneService {
 
     @Override
     public List<TelefoneResponseDTO> getAll() {
-        return repository.findAll().stream()
-                .map(TelefoneResponseDTO::new)
-                .collect(Collectors.toList());
+        try {
+            LOG.info("Requisição getAll()");
+            return repository.findAll().stream()
+                    .map(TelefoneResponseDTO::new)
+                    .collect(Collectors.toList());
+
+        }catch (Exception e){
+            LOG.error("Erro ao rodar Requisição getAll()");
+            return null;
+        }
     }
 
     @Override
     public TelefoneResponseDTO getId(long id) {
-        return new TelefoneResponseDTO(repository.findById(id));
+        try {
+            LOG.info("Requisição getId()");
+            return new TelefoneResponseDTO(repository.findById(id));
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição getId()");
+            return null;
+        }
     }
 
     @Override
@@ -43,36 +62,63 @@ public class TelefoneServiceImpl implements TelefoneService {
 
     @Transactional
     @Override
-    public TelefoneResponseDTO insert(TelefoneDTO dto, Long idUsuario) {
-        Telefone telefone = new Telefone();
-        telefone.setCodigoArea(dto.codigoArea());
-        telefone.setNumero(dto.numero());
-        telefone.setUsuario(usuarioRepository.findById(idUsuario));
-        repository.persist(telefone);
-        return new TelefoneResponseDTO(telefone);
+    public Response insert(TelefoneDTO dto, String idUsuario) {
+
+        try {
+            LOG.info("Requisição insert()");
+
+            Telefone telefone = new Telefone();
+            telefone.setCodigoArea(dto.codigoArea());
+            telefone.setNumero(dto.numero());
+            telefone.setUsuario(usuarioRepository.findById(idUsuario));
+            repository.persist(telefone);
+            return Response.ok(new TelefoneResponseDTO(telefone)).build();
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição insert()");
+            return Response.noContent().build();
+        }
     }
 
     @Transactional
     @Override
     public Response update(Long id, TelefoneDTO dto) {
-        Telefone telefone = repository.findById(id);
-        if (telefone != null) {
+        try {
+
+            Telefone telefone = new Telefone();
+            telefone = repository.findById(id);
+            if (telefone == null) {
+                throw new Exception("Telefone nao encontrado");
+            }
             telefone.setCodigoArea(dto.codigoArea());
             telefone.setNumero(dto.numero());
             repository.persist(telefone);
             return Response.ok(new TelefoneResponseDTO(telefone)).build();
+
+        }catch (Exception e){
+            return Response.status(Response.Status.NOT_FOUND).build();
+
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @Transactional
     @Override
     public Response delete(Long id) {
-        Telefone telefone = repository.findById(id);
-        if (telefone != null) {
-            repository.delete(telefone);
-            return Response.ok().build();
+        try {
+            LOG.info("Requisição delete()");Telefone telefone = repository.findById(id);
+            if (telefone != null) {
+                repository.delete(telefone);
+                return Response.ok().build();
+
+        } else {
+            throw new Exception("telefone não encontrado!");
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
+    }catch (Exception e){
+
+        LOG.info("erro ao rodar Requisição delete() - " + e.getMessage());
+        return Response.notModified(e.getMessage()).build();
+    }
+
     }
 }

@@ -1,7 +1,6 @@
 package org.acme.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -11,7 +10,10 @@ import jakarta.validation.constraints.Size;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario extends DefaultyEntity {
-    
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     
     @NotBlank(message = "O campo 'nome' não pode estar em branco")
     @Size(max = 100, message = "O campo 'nome' deve ter no máximo 100 caracteres")
@@ -29,8 +31,7 @@ public class Usuario extends DefaultyEntity {
     @NotBlank(message = "O campo 'senha' não pode estar em branco")
     private String senha;
 
-    
-    @Column
+
     @NotBlank(message = "O campo 'cpf' não pode estar em branco")
     @Size(max = 16, message = "O campo 'cpf' deve ter no máximo 50 caracteres")
     private String cpf;
@@ -40,7 +41,13 @@ public class Usuario extends DefaultyEntity {
     @Column(name = "perfil", length = 30)
     private Set<Perfil> perfis;
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
@@ -51,6 +58,9 @@ public class Usuario extends DefaultyEntity {
     }
 
     public Set<Perfil> getPerfis() {
+        if( perfis == null){
+            perfis =  new HashSet<>();
+        }
         return perfis;
     }
 

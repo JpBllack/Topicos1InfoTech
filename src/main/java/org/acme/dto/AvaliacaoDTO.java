@@ -1,6 +1,8 @@
 package org.acme.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record AvaliacaoDTO(
-        Integer nota, String comentario
+        @NotBlank Integer nota, String comentario
 ) {
 }

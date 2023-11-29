@@ -9,35 +9,64 @@ import org.acme.dto.PixPagamentoResponseDTO;
 import org.acme.model.PixPagamento;
 import org.acme.repository.PixPagamentoRepository;
 import org.acme.service.PixPagamentoService;
+import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class PixPagamentoServiceImpl implements PixPagamentoService {
+
+    public static final Logger LOG = Logger.getLogger(PixPagamentoServiceImpl.class);
+
     @Inject
     PixPagamentoRepository repository;
 
     @Override
     public List<PixPagamentoResponseDTO> getAll() {
-        return repository.findAll().stream()
-                .map(PixPagamentoResponseDTO::new)
-                .collect(Collectors.toList());
+        try {
+            LOG.info("Requisição getAll()");
+            return repository.findAll().stream()
+                    .map(PixPagamentoResponseDTO::new)
+                    .collect(Collectors.toList());
+
+        }catch (Exception e){
+            LOG.error("Erro ao rodar Requisição getAll()");
+            return null;
+        }
     }
 
     @Override
     public PixPagamentoResponseDTO getId(long id) {
-        return new PixPagamentoResponseDTO(repository.findById(id));
+        try {
+            LOG.info("Requisição getId()");
+            return new PixPagamentoResponseDTO(repository.findById(id));
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição getId()");
+            return null;
+        }
     }
 
     @Transactional
     @Override
     public Response insert(PixPagamentoDTO dto) {
-        PixPagamento pixPagamento = new PixPagamento();
-        pixPagamento.setChave(dto.chave());
-        pixPagamento.setValor(dto.valor());
-        repository.persist(pixPagamento);
-        return Response.ok(new PixPagamentoResponseDTO(pixPagamento)).build();
+
+        try {
+            LOG.info("Requisição insert()");
+
+            PixPagamento pixPagamento = new PixPagamento();
+            pixPagamento.setChave(dto.chave());
+            pixPagamento.setValor(dto.valor());
+            repository.persist(pixPagamento);
+            return Response.ok(new PixPagamentoResponseDTO(pixPagamento)).build();
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição insert()");
+            return Response.noContent().build();
+        }
     }
 
     @Transactional
@@ -56,11 +85,19 @@ public class PixPagamentoServiceImpl implements PixPagamentoService {
     @Transactional
     @Override
     public Response delete(Long id) {
-        PixPagamento pixPagamento = repository.findById(id);
-        if (pixPagamento != null) {
-            repository.delete(pixPagamento);
-            return Response.ok().build();
+        try {
+            LOG.info("Requisição delete()");
+            PixPagamento pixPagamento = repository.findById(id);
+            if (pixPagamento != null) {
+                repository.delete(pixPagamento);
+                return Response.ok().build();
+            } else {
+                throw new Exception("pixPagamento não encontrado!");
+            }
+        } catch (Exception e) {
+
+            LOG.info("erro ao rodar Requisição delete() - " + e.getMessage());
+            return Response.notModified(e.getMessage()).build();
         }
-        return Response.status(Response.Status.NOT_FOUND).build();
     }
 }

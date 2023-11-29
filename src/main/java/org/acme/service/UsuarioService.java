@@ -9,26 +9,28 @@ import java.util.List;
 
 public interface UsuarioService {
 
-    public List<UsuarioResponseDTO> getAll();
+    List<UsuarioResponseDTO> getAll();
 
-    public UsuarioResponseDTO getId(long id);
+    UsuarioResponseDTO getId(String id);
 
-    public Usuario findByLoginAndSenha(String login, String senha);
+    Usuario findByLoginAndSenha(String login, String senha);
 
-    public List<UsuarioResponseDTO> getNome(String nome);
+    List<UsuarioResponseDTO> getNome(String nome);
 
-    public UsuarioResponseDTO getCpf(String cpf);
+    UsuarioResponseDTO getCpf(String cpf);
 
-    public UsuarioResponseDTO updateEmail(Long id, UsuarioUpdateEmailDTO email);
+    UsuarioResponseDTO updateEmail(String id, UsuarioUpdateEmailDTO email);
 
-    public UsuarioResponseDTO updateNome(Long id, UsuarioUpdateNomeDTO nome);
+    UsuarioResponseDTO updateNome(String id, UsuarioUpdateNomeDTO nome);
 
-    public UsuarioResponseDTO updateLogin(Long id, UsuarioUpdateLoginDTO login);
+    UsuarioResponseDTO updateLogin(String id, UsuarioUpdateLoginDTO login);
 
-    public UsuarioResponseDTO updateSenha(MudarSenhaDTO senha);
+    UsuarioResponseDTO updateSenha(MudarSenhaDTO senha);
 
-    public Response insert(UsuarioDTO usuarioDTO);
+    Response promoverAdmin(String id);
 
-    public Response delete(@PathParam("id") Long id);
+    Response insert(UsuarioDTO usuarioDTO);
+
+    Response delete(@PathParam("id") String id);
 
 }

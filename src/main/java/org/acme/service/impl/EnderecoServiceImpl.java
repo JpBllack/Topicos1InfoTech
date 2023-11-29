@@ -12,13 +12,14 @@ import org.acme.repository.CidadeRepository;
 import org.acme.repository.EnderecoRepository;
 import org.acme.repository.UsuarioRepository;
 import org.acme.service.EnderecoService;
+import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class EnderecoServiceImpl implements EnderecoService {
-
+    public static final Logger LOG = Logger.getLogger(EnderecoServiceImpl.class);
     @Inject
     EnderecoRepository repository;
 
@@ -30,40 +31,73 @@ public class EnderecoServiceImpl implements EnderecoService {
 
     @Override
     public List<EnderecoResponseDTO> getAll() {
-        return repository.findAll().stream()
-                .map(EnderecoResponseDTO::new)
-                .collect(Collectors.toList());
+        try {
+            LOG.info("Requisição getAll()");
+
+            return repository.findAll().stream()
+                    .map(EnderecoResponseDTO::new)
+                    .collect(Collectors.toList());
+        }catch (Exception e){
+            LOG.error("Erro ao rodar Requisição getAll()");
+            return null;
+        }
     }
 
     @Override
-    public EnderecoResponseDTO getId(long id) {
-        return new EnderecoResponseDTO(repository.findById(id));
+    public EnderecoResponseDTO getId(Long id) {
+        try {
+            LOG.info("Requisição getId()");
+            return new EnderecoResponseDTO(repository.findById(id));
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição getId()");
+            return null;
+        }
     }
 
     @Transactional
     @Override
-    public EnderecoResponseDTO insert(EnderecoDTO dto, Long idUsuario) {
-        Endereco endereco = new Endereco();
-        endereco.setLogradouro(dto.logradouro());
-        endereco.setNumero(dto.numero());
-        endereco.setComplemento(dto.complemento());
-        endereco.setBairro(dto.bairro());
-        endereco.setCidade(cidadeRepository.findById(dto.idCidade()));
-        endereco.setCep(dto.cep());
-        endereco.setUsuario(usuarioRepository.findById(idUsuario));
-        repository.persist(endereco);
-        return new EnderecoResponseDTO(endereco);
+    public Response insert(String idUsuario, EnderecoDTO dto) {
+
+        try {
+            LOG.info("Requisição insert()");
+
+            Endereco endereco = new Endereco();
+            endereco.setLogradouro(dto.logradouro());
+            endereco.setNumero(dto.numero());
+            endereco.setComplemento(dto.complemento());
+            endereco.setBairro(dto.bairro());
+            endereco.setCidade(cidadeRepository.findById(dto.idCidade()));
+            endereco.setCep(dto.cep());
+            endereco.setUsuario(usuarioRepository.findById(idUsuario));
+            repository.persist(endereco);
+            return Response.ok(new EnderecoResponseDTO(endereco)).build();
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição insert()");
+            return Response.noContent().build();
+        }
     }
 
     @Transactional
     @Override
     public Response delete(long id) {
-        Endereco endereco = repository.findById(id);
-        if (endereco != null) {
-            repository.delete(endereco);
-            return Response.ok().build();
+
+        try {
+            LOG.info("Requisição delete()");
+            Endereco endereco = repository.findById(id);
+            if (endereco != null) {
+                repository.delete(endereco);
+                return Response.ok().build();
         } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new Exception("endereco não encontrado!");
         }
+    }catch (Exception e){
+
+        LOG.info("erro ao rodar Requisição delete()");
+        return Response.notModified(e.getMessage()).build();
+    }
     }
 }

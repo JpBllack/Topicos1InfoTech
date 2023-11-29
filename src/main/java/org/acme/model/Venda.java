@@ -2,11 +2,24 @@ package org.acme.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Venda extends DefaultyEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     private Double valorTotal;
 
@@ -41,6 +54,9 @@ public class Venda extends DefaultyEntity {
     }
 
     public Double getValorTotal() {
+        if(valorTotal == null){
+            valorTotal = 0.0;
+        }
         return valorTotal;
     }
 
@@ -57,6 +73,10 @@ public class Venda extends DefaultyEntity {
     }
 
     public List<ItemVenda> getItemVendaList() {
+        if(itemVendaList == null){
+            itemVendaList = new ArrayList<>();
+        }
+
         return itemVendaList;
     }
 

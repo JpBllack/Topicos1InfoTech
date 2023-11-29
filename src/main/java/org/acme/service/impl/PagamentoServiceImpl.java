@@ -9,6 +9,7 @@ import org.acme.dto.PagamentoResponseDTO;
 import org.acme.model.Pagamento;
 import org.acme.repository.PagamentoRepository;
 import org.acme.service.PagamentoService;
+import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,19 +17,36 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class PagamentoServiceImpl implements PagamentoService {
 
+    public static final Logger LOG = Logger.getLogger(PagamentoServiceImpl.class);
+
     @Inject
     PagamentoRepository repository;
 
     @Override
     public List<PagamentoResponseDTO> getAll() {
-        return repository.findAll().stream()
-                .map(PagamentoResponseDTO::new)
-                .collect(Collectors.toList());
+        try {
+            LOG.info("Requisição getAll()");
+
+            return repository.findAll().stream()
+                    .map(PagamentoResponseDTO::new)
+                    .collect(Collectors.toList());
+        }catch (Exception e){
+            LOG.error("Erro ao rodar Requisição getAll()");
+            return null;
+        }
     }
 
     @Override
     public PagamentoResponseDTO getId(long id) {
-        return new PagamentoResponseDTO(repository.findById(id));
+        try {
+            LOG.info("Requisição getId()");
+            return new PagamentoResponseDTO(repository.findById(id));
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição getId()");
+            return null;
+        }
     }
 
     @Override
@@ -41,23 +59,42 @@ public class PagamentoServiceImpl implements PagamentoService {
     @Transactional
     @Override
     public Response insert(PagamentoDTO dto) {
-        Pagamento pagamento = new Pagamento();
-        pagamento.setTipo(dto.tipo());
-        pagamento.setValor(dto.valor());
-        pagamento.setPago(true);
-        repository.persist(pagamento);
-        return Response.ok(new PagamentoResponseDTO(pagamento)).build();
+
+        try {
+            LOG.info("Requisição insert()");
+
+
+            Pagamento pagamento = new Pagamento();
+            pagamento.setTipo(dto.tipo());
+            pagamento.setValor(dto.valor());
+            pagamento.setPago(true);
+            repository.persist(pagamento);
+            return Response.ok(new PagamentoResponseDTO(pagamento)).build();
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição insert()");
+            return Response.noContent().build();
+        }
     }
 
     @Transactional
     @Override
     public Response delete(long id) {
-        Pagamento pagamento = repository.findById(id);
-        if (pagamento != null) {
-            repository.delete(pagamento);
-            return Response.ok().build();
+        try {
+            LOG.info("Requisição delete()");
+            Pagamento pagamento = repository.findById(id);
+            if (pagamento != null) {
+                repository.delete(pagamento);
+                return Response.ok().build();
         } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new Exception("pagamento não encontrado!");
         }
+    }catch (Exception e){
+
+        LOG.info("erro ao rodar Requisição delete() - " + e.getMessage());
+        return Response.notModified(e.getMessage()).build();
+    }
+
+
     }
 }

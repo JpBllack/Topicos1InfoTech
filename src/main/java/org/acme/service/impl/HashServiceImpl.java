@@ -10,9 +10,12 @@ import javax.crypto.spec.PBEKeySpec;
 import org.acme.service.HashService;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import org.jboss.logging.Logger;
 
 @ApplicationScoped
 public class HashServiceImpl implements HashService {
+
+    public static final Logger LOG = Logger.getLogger(HashServiceImpl.class);
 
     private String salt = "#blahxyz22";
 

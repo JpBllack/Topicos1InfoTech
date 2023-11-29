@@ -1,10 +1,24 @@
 package org.acme.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Endereco extends DefaultyEntity{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
     private String logradouro;
 
     private String numero;
@@ -19,8 +33,9 @@ public class Endereco extends DefaultyEntity{
 
     private String cep;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "usuario_enderedo")
+    @JoinColumn(name = "usuario_endereco")
     private Usuario usuario;
 
     public Usuario getUsuario() {

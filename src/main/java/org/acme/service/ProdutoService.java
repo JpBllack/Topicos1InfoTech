@@ -2,6 +2,7 @@ package org.acme.service;
 
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
+import org.acme.dto.AvaliacaoResponseDTO;
 import org.acme.dto.ProdutoDTO;
 import org.acme.dto.ProdutoResponseDTO;
 import org.acme.form.ImageForm;
@@ -13,23 +14,25 @@ import java.util.List;
 
 public interface ProdutoService {
 
-    public List<ProdutoResponseDTO> getAll();
+    List<ProdutoResponseDTO> getAll();
 
-    public ProdutoResponseDTO getId(@PathParam("id") long id);
+    List<AvaliacaoResponseDTO> getAvaliacao(Long id);
 
-    public List<ProdutoResponseDTO> getNome(@PathParam("nome") String nome);
+    ProdutoResponseDTO getId(@PathParam("id") Long id);
 
-    public Response insert(ProdutoDTO produtoDTO);
+    List<ProdutoResponseDTO> getNome(@PathParam("nome") String nome);
 
-    public Response update(@PathParam("id") long id, ProdutoDTO produto);
+    Response insert(ProdutoDTO produtoDTO);
 
-    public Response delete(@PathParam("id") Long id);
+    Response delete(@PathParam("id") Long id);
 
-    public Response retiraEstoque(@PathParam("id") Long id, int quantidade);
+    Response update(@PathParam("id") Long id, ProdutoDTO produto);
 
-    public Response adicionaEstoque(@PathParam("id") Long id, int quantidade);
+    Response retiraEstoque(@PathParam("id") Long id, int quantidade);
 
-    public Response salvarImagem(@MultipartForm ImageForm form, Long produtoId);
+    Response adicionaEstoque(@PathParam("id") Long id, int quantidade);
 
-    public Response downloadImagem(Long produtoId);
+    Response salvarImagem(@MultipartForm ImageForm form, Long produtoId);
+
+    Response downloadImagem(Long produtoId);
 }

@@ -9,26 +9,42 @@ import org.acme.dto.CategoriaResponseDTO;
 import org.acme.model.Categoria;
 import org.acme.repository.CategoriaRepository;
 import org.acme.service.CategoriaService;
+import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class CategoriaServiceImpl implements CategoriaService {
-
+    public static final Logger LOG = Logger.getLogger(CategoriaServiceImpl.class);
     @Inject
     CategoriaRepository repository;
 
     @Override
     public List<CategoriaResponseDTO> getAll() {
-        return repository.findAll().stream()
-                .map(CategoriaResponseDTO::new)
-                .collect(Collectors.toList());
+        try {
+            LOG.info("Requisição getAll()");
+
+            return repository.findAll().stream()
+                    .map(CategoriaResponseDTO::new)
+                    .collect(Collectors.toList());
+        }catch (Exception e){
+            LOG.error("Erro ao rodar Requisição getAll()");
+            return null;
+        }
     }
 
     @Override
     public CategoriaResponseDTO getId(long id) {
-        return new CategoriaResponseDTO(repository.findById(id));
+
+        try {
+            LOG.info("Requisição getId()");
+            return new CategoriaResponseDTO(repository.findById(id));
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição getId()");
+            return null;
+        }
     }
 
     @Override
@@ -41,21 +57,39 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Transactional
     @Override
     public Response insert(CategoriaDTO dto) {
-        Categoria categoria = new Categoria();
-        categoria.setNome(dto.nome());
-        repository.persist(categoria);
-        return Response.ok(new CategoriaResponseDTO(categoria)).build();
+
+        try {
+            LOG.info("Requisição insert()");
+
+            Categoria categoria = new Categoria();
+            categoria.setNome(dto.nome());
+            repository.persist(categoria);
+            return Response.ok(new CategoriaResponseDTO(categoria)).build();
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição insert()");
+            return Response.noContent().build();
+        }
     }
 
     @Transactional
     @Override
     public Response delete(long id) {
-        Categoria categoria = repository.findById(id);
-        if (categoria != null) {
-            repository.delete(categoria);
-            return Response.ok().build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+
+        try {
+            LOG.info("Requisição delete()");
+            Categoria categoria = repository.findById(id);
+            if (categoria != null) {
+                repository.delete(categoria);
+                return Response.ok().build();
+            } else {
+                throw new Exception("não encontrado!");
+            }
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição delete()");
+            return Response.notModified(e.getMessage()).build();
         }
     }
 }

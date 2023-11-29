@@ -9,6 +9,7 @@ import org.acme.dto.AvaliacaoResponseDTO;
 import org.acme.model.Avaliacao;
 import org.acme.repository.AvaliacaoRepository;
 import org.acme.service.AvaliacaoService;
+import org.jboss.logging.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,40 +17,75 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class AvaliacaoServiceImpl implements AvaliacaoService {
 
+    public static final Logger LOG = Logger.getLogger(AvaliacaoServiceImpl.class);
     @Inject
     AvaliacaoRepository repository;
 
     @Override
     public List<AvaliacaoResponseDTO> getAll() {
-        return repository.findAll().stream()
-                .map(AvaliacaoResponseDTO::new)
-                .collect(Collectors.toList());
+        try {
+            LOG.info("Requisição getAll()");
+            return repository.findAll().stream()
+                    .map(AvaliacaoResponseDTO::new)
+                    .collect(Collectors.toList());
+
+        }catch (Exception e){
+            LOG.error("Erro ao rodar Requisição getAll()");
+            return null;
+        }
     }
 
     @Override
-    public AvaliacaoResponseDTO getId(long id) {
-        return new AvaliacaoResponseDTO(repository.findById(id));
+    public AvaliacaoResponseDTO getId(Long id) {
+        try {
+            LOG.info("Requisição getId()");
+            return new AvaliacaoResponseDTO(repository.findById(id));
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição getId()");
+            return null;
+        }
     }
 
     @Transactional
     @Override
     public Response insert(AvaliacaoDTO dto) {
-        Avaliacao avaliacao = new Avaliacao();
-        avaliacao.setNota(dto.nota());
-        avaliacao.setComentario(dto.comentario());
-        repository.persist(avaliacao);
-        return Response.ok(new AvaliacaoResponseDTO(avaliacao)).build();
+
+        try {
+            LOG.info("Requisição insert()");
+            Avaliacao avaliacao = new Avaliacao();
+            avaliacao.setNota(dto.nota());
+            avaliacao.setComentario(dto.comentario());
+            repository.persist(avaliacao);
+            return Response.ok(new AvaliacaoResponseDTO(avaliacao)).build();
+
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição insert()");
+            return Response.noContent().build();
+        }
+
     }
+
 
     @Transactional
     @Override
-    public Response delete(long id) {
-        Avaliacao avaliacao = repository.findById(id);
-        if (avaliacao != null) {
-            repository.delete(avaliacao);
-            return Response.ok().build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+    public Response delete(Long id) {
+        try {
+            LOG.info("Requisição delete()");
+            Avaliacao avaliacao = repository.findById(id);
+            if (avaliacao != null) {
+                repository.delete(avaliacao);
+                return Response.ok().build();
+            } else {
+                throw new Exception("Avaliacao não encontrada!");
+            }
+        }catch (Exception e){
+
+            LOG.info("erro ao rodar Requisição delete()");
+            return Response.notModified(e.getMessage()).build();
         }
+
     }
 }
