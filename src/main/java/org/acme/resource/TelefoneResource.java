@@ -1,6 +1,7 @@
 package org.acme.resource;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -19,39 +20,39 @@ public class TelefoneResource {
     TelefoneService service;
 
     @GET
-    @PermitAll
+    @RolesAllowed({"Admin"})
     public List<TelefoneResponseDTO> getAll(){
         return service.getAll();
     }
     @GET
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/{id}")
     public TelefoneResponseDTO getId(@PathParam("id") long id){
         return service.getId(id);
     }
     @GET
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/codigo/{codigo}")
-    public List<TelefoneResponseDTO> getId(@PathParam("codigo") String codigo){
+    public List<TelefoneResponseDTO> getCodigoArea(@PathParam("codigo") String codigo){
         return service.getCodigoArea(codigo);
     }
 
     @POST
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/{id}")
     public Response insert(@PathParam("id") String id, TelefoneDTO dto){
         return service.insert(dto, id);
     }
 
     @PATCH
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/{id}")
     public Response update(@PathParam("id") long id, TelefoneDTO dto){
         return service.update(id, dto);
     }
 
     @DELETE
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/{id}")
     public Response delete(@PathParam("id") long id){
         return service.delete(id);

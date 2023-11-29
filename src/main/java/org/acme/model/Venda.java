@@ -23,8 +23,6 @@ public class Venda extends DefaultyEntity {
 
     private Double valorTotal;
 
-    private Double desconto;
-
     @OneToMany
     @JoinColumn(name = "venda_itemvenda")
     private List<ItemVenda> itemVendaList;
@@ -62,14 +60,6 @@ public class Venda extends DefaultyEntity {
 
     public void setValorTotal(Double valorTotal) {
         this.valorTotal = valorTotal;
-    }
-
-    public Double getDesconto() {
-        return desconto;
-    }
-
-    public void setDesconto(Double desconto) {
-        this.desconto = desconto;
     }
 
     public List<ItemVenda> getItemVendaList() {

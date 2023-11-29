@@ -1,6 +1,7 @@
 package org.acme.resource;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -49,40 +50,40 @@ public class ProdutoResource {
     }
 
     @POST
-    @PermitAll
+    @RolesAllowed({"Admin"})
     public Response insert(ProdutoDTO enderecoDTO){
         return service.insert(enderecoDTO);
     }
 
     @DELETE
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/{id}")
     public Response delete(@PathParam("id") long id){
         return service.delete(id);
     }
 
     @PATCH
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/{id}")
     public Response update(@PathParam("id") long id, ProdutoDTO produto){
         return service.update(id, produto);
     }
     @PATCH
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/retiraestoque/{id}")
     public Response retiraEstoque(@PathParam("id") Long id, int quantidade){
         return service.retiraEstoque(id, quantidade);
     }
 
     @PATCH
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/adicionaestoque/{id}")
     public Response adicionaEstoque(@PathParam("id") Long id, int quantidade){
         return service.adicionaEstoque(id, quantidade);
     }
 
     @PATCH
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/imagem/salvar")
     public Response salvarImagem(@MultipartForm ImageForm form, Long produtoId){
         return service.salvarImagem(form, produtoId);

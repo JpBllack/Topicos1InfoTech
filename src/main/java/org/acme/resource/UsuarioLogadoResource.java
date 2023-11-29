@@ -69,12 +69,14 @@ public class UsuarioLogadoResource {
     public Response insertTelefone(TelefoneDTO telefoneDTO) {
         return service.insertTelefone(telefoneDTO);
     }
+
     @PATCH
     @RolesAllowed({"User", "Admin"})
     @Path("/insert/endereco")
     public Response insertEndereco(EnderecoDTO enderecoDTO) {
         return service.insertEndereco(enderecoDTO);
     }
+
     @DELETE
     @RolesAllowed({"User", "Admin"})
     public Response deleteOn() {

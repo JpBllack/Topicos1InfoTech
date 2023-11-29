@@ -71,13 +71,13 @@ public class VendaServiceImpl implements VendaService {
             LOG.info("Requisição insert()");
 
             Venda venda = new Venda();
-            venda.setDesconto(dto.desconto());
-            dto.itemVendaList().stream()
-                    .map(i -> venda.getItemVendaList().add(itemVendaRepository.findById(i)));
+            if(dto.itemVendaList() != null){
+                dto.itemVendaList().stream()
+                        .map(i -> venda.getItemVendaList().add(itemVendaRepository.findById(i)));
+                venda.getItemVendaList().stream().forEach(i -> venda.setValorTotal(venda.getValorTotal() + i.getValorTotal()));
+            }
             venda.setEndereco(enderecoRepository.findById(dto.idEndereco()));
-            venda.getItemVendaList().stream().forEach(i -> venda.setValorTotal(venda.getValorTotal() + i.getValorTotal()));
             repository.persist(venda);
-
             return Response.ok(new VendaResponseDTO(venda)).build();
 
         }catch (Exception e){
@@ -103,9 +103,9 @@ public class VendaServiceImpl implements VendaService {
 
         ItemVenda itemVenda = new ItemVenda();
         itemVenda.setQuantidade(vendaDTO.dto().quantidade());
-        itemVenda.setValorUnitario(vendaDTO.dto().valorUnitario());
         itemVenda.setProduto(produtoRepository.findById(vendaDTO.dto().idProduto()));
-        itemVenda.setValorTotal(vendaDTO.dto().valorUnitario() * vendaDTO.dto().quantidade());
+        itemVenda.setValorUnitario(itemVenda.getProduto().getValor());
+        itemVenda.setValorTotal(itemVenda.getValorUnitario() * vendaDTO.dto().quantidade());
         itemVendaRepository.persist(itemVenda);
         v.setValorTotal(v.getValorTotal() + itemVenda.getValorTotal());
         v.getItemVendaList().add(itemVenda);

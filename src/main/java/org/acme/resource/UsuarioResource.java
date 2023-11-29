@@ -1,6 +1,7 @@
 package org.acme.resource;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -18,19 +19,19 @@ public class UsuarioResource {
     UsuarioService service;
 
     @GET
-    @PermitAll
+    @RolesAllowed({"Admin"})
     public List<UsuarioResponseDTO> getAll(){
         return service.getAll();
     }
     @GET
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/{id}")
     public UsuarioResponseDTO getId(@PathParam("id") String id){
         return service.getId(id);
     }
 
     @GET
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/nome/{nome}")
     public List<UsuarioResponseDTO> getNome(@PathParam("nome") String nome){
         return service.getNome(nome);
@@ -43,46 +44,46 @@ public class UsuarioResource {
     }
 
     @DELETE
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/{id}")
     public Response delete(@PathParam("id") String id){
         return service.delete(id);
     }
 
     @GET
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/cpf/{cpf}")
     public UsuarioResponseDTO getCpf(@PathParam("cpf")String cpf){
         return service.getCpf(cpf);
     }
 
     @PATCH
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/update/email/{id}")
     public UsuarioResponseDTO updateEmail(@PathParam("id") String id, UsuarioUpdateEmailDTO email){
         return service.updateEmail(id, email);
     }
     @PATCH
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/update/nome/{id}")
     public UsuarioResponseDTO updateNome(@PathParam("id") String id, UsuarioUpdateNomeDTO nome){
         return service.updateNome(id, nome);
     }
     @PATCH
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/update/login/{id}")
     public UsuarioResponseDTO updateLogin(@PathParam("id") String id, UsuarioUpdateLoginDTO login){
         return service.updateLogin(id, login);
     }
     @PATCH
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/update/senha/{id}")
     public UsuarioResponseDTO updateSenha(MudarSenhaDTO senha){
         return service.updateSenha(senha);
     }
 
     @PATCH
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/promoveradmin/{id}")
     public Response promoverAdmin(@PathParam("id") String id){
         return service.promoverAdmin(id);

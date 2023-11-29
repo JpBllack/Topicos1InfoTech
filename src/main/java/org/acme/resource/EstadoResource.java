@@ -1,6 +1,7 @@
 package org.acme.resource;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -37,20 +38,20 @@ public class EstadoResource {
     }
 
     @POST
-    @PermitAll
+    @RolesAllowed({"Admin"})
     public Response insert(EstadoDTO dto){
         return service.insert(dto);
     }
 
     @PATCH
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("{id}")
     public EstadoResponseDTO update(@PathParam("id") long id, EstadoDTO dto){
         return service.update(dto, id);
     }
 
     @DELETE
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/{id}")
     public Response delete(@PathParam("id") long id){
         return service.delete(id);

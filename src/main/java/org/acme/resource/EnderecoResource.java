@@ -1,6 +1,7 @@
 package org.acme.resource;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -19,26 +20,26 @@ public class EnderecoResource {
     EnderecoService service;
 
     @GET
-    @PermitAll
+    @RolesAllowed({"Admin"})
     public List<EnderecoResponseDTO> getAll(){
         return service.getAll();
     }
     @GET
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/{id}")
     public EnderecoResponseDTO getId(@PathParam("id") long id){
         return service.getId(id);
     }
 
     @POST
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/{id}")
     public Response insert(@PathParam("id") String id, EnderecoDTO enderecoDTO){
         return service.insert(id, enderecoDTO);
     }
 
     @DELETE
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/{id}")
     public Response delete(@PathParam("id") long id){
         return service.delete(id);

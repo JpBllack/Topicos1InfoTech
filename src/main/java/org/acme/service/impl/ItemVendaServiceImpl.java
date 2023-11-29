@@ -62,9 +62,9 @@ public class ItemVendaServiceImpl implements ItemVendaService {
 
             ItemVenda itemVenda = new ItemVenda();
             itemVenda.setQuantidade(dto.quantidade());
-            itemVenda.setValorUnitario(dto.valorUnitario());
             itemVenda.setProduto(produtoRepository.findById(dto.idProduto()));
-            itemVenda.setValorTotal(dto.valorUnitario() * dto.quantidade());
+            itemVenda.setValorUnitario(itemVenda.getProduto().getValor());
+            itemVenda.setValorTotal(itemVenda.getValorUnitario() * dto.quantidade());
             repository.persist(itemVenda);
             return Response.ok(new ItemVendaResponseDTO(itemVenda)).build();
 

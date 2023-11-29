@@ -7,9 +7,9 @@ public record ItemVendaResponseDTO(
         Integer quantidade,
         Double valorUnitario,
         Double valorTotal,
-        ProdutoResponseDTO produtoResponseDTO
+        Long idProduto
 ) {
     public ItemVendaResponseDTO(ItemVenda i){
-        this(i.getId(), i.getQuantidade(), i.getValorUnitario(), i.getValorTotal(), new ProdutoResponseDTO(i.getProduto()));
+        this(i.getId(), i.getQuantidade(), i.getValorUnitario(), i.getValorTotal(), i.getProduto().getId());
     }
 }

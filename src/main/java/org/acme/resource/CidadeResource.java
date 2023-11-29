@@ -1,6 +1,7 @@
 package org.acme.resource;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.*;
 import org.acme.dto.CidadeDTO;
 import org.acme.dto.CidadeResponseDTO;
@@ -23,16 +24,16 @@ public class CidadeResource {
     CidadeService service;
     
     @POST
+    @RolesAllowed({"Admin"})
     public Response insert(CidadeDTO cidadeDTO){
         return service.insert(cidadeDTO);
     }
 
     @PUT
-    @Transactional
+    @RolesAllowed({"Admin"})
     @Path("/update/{id}")
-    public Response update(CidadeDTO cidadeDTO, @PathParam("id") Long id) {
-    service.update(cidadeDTO, id);
-    return Response.ok().build();
+    public CidadeResponseDTO update(CidadeDTO cidadeDTO, @PathParam("id") Long id) {
+    return service.update(cidadeDTO, id);
 
     }
     @GET
@@ -43,7 +44,7 @@ public class CidadeResource {
     }
     @GET
     @PermitAll
-    @Path("/{nome}")
+    @Path("/nome/{nome}")
     public List<CidadeResponseDTO> getINome(@PathParam("nome") String nome){
         return service.findByNome(nome);
     }
@@ -55,7 +56,7 @@ public class CidadeResource {
     }
 
     @DELETE
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/delete/{id}")
     public Response delete(@PathParam("id") long id){
         return service.delete(id);

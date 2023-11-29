@@ -1,6 +1,7 @@
 package org.acme.resource;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -31,19 +32,19 @@ public class CategoriaResource {
     }
     @GET
     @PermitAll
-    @Path("/{nome}")
-    public List<CategoriaResponseDTO> getINome(@PathParam("nome") String nome){
+    @Path("/nome/{nome}")
+    public List<CategoriaResponseDTO> getNome(@PathParam("nome") String nome){
         return service.getNome(nome);
     }
 
     @POST
-    @PermitAll
+    @RolesAllowed({"Admin"})
     public Response insert(CategoriaDTO categoriaDTO){
         return service.insert(categoriaDTO);
     }
 
     @DELETE
-    @PermitAll
+    @RolesAllowed({"Admin"})
     @Path("/{id}")
     public Response delete(@PathParam("id") long id){
         return service.delete(id);
