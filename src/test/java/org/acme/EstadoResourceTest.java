@@ -4,13 +4,13 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.acme.dto.AuthUsuarioDTO;
 import org.acme.dto.EstadoDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EstadoResourceTest {
 
     private String token;
@@ -31,6 +31,7 @@ public class EstadoResourceTest {
     }
 
     @Test
+    @Order(1)
     public void getAllTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
@@ -40,6 +41,7 @@ public class EstadoResourceTest {
     }
 
     @Test
+    @Order(2)
     public void getIdTeste() {
         Long testeId = 4L; // Substitua pelo ID de um estado válido
         given()
@@ -50,6 +52,7 @@ public class EstadoResourceTest {
     }
 
     @Test
+    @Order(3)
     public void insertTest() {
         EstadoDTO estadoDTO = new EstadoDTO("São Paulo", "SP");
 
@@ -63,6 +66,7 @@ public class EstadoResourceTest {
     }
 
     @Test
+    @Order(4)
     public void updateTest() {
         Long testeId = 1L; // Substitua pelo ID de um estado válido
         EstadoDTO estadoDTO = new EstadoDTO("Rio de Janeiro", "RJ");
@@ -78,6 +82,7 @@ public class EstadoResourceTest {
     }
 
     @Test
+    @Order(5)
     public void deleteTest() {
         Long testeId = 4L; // Substitua pelo ID de um estado válido
         given()

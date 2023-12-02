@@ -97,7 +97,7 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
             Usuario entity = usuarioRepository.findById(jsonWebToken.getSubject());
 
             entity.setNome(nome.nome());
-            return Response.ok(new UsuarioResponseDTO(entity)).build();
+            return Response.ok().build();
         } catch (Exception e) {
             LOG.error("Requisição updateNome()");
             return Response.notModified(e.getMessage()).build();
@@ -113,7 +113,7 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
             Usuario entity = usuarioRepository.findById(jsonWebToken.getSubject());
 
             entity.setEmail(dto.email());
-            return Response.ok(new UsuarioResponseDTO(entity)).build();
+            return Response.ok().build();
         } catch (Exception e) {
             LOG.error("Requisição updateEmail()");
             return Response.notModified(e.getMessage()).build();
@@ -139,11 +139,11 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
                 telefone.setCodigoArea(dto.codigoArea());
                 telefone.setUsuario(entity);
                 telefoneRepository.persist(telefone);
-                return Response.ok(new TelefoneResponseDTO(telefone)).build();
+                return Response.ok().build();
             }
             t.get().setCodigoArea(dto.codigoArea());
             t.get().setNumero(dto.numero());
-            return Response.ok(new TelefoneResponseDTO(t.get())).build();
+            return Response.ok().build();
         } catch (Exception e) {
             LOG.error("Requisição updateTelefone()");
             return Response.notModified(e.getMessage()).build();
@@ -176,7 +176,7 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
             if(dto.logradouro() != null){
                 e.setLogradouro(dto.logradouro());
             }
-            return Response.ok(new EnderecoResponseDTO(e)).build();
+            return Response.ok().build();
         }catch (Exception e){
             LOG.error("Requisição updateEndereco()");
             return Response.notModified(e.getMessage()).build();

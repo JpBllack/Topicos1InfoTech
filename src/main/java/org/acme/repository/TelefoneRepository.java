@@ -12,7 +12,7 @@ public class TelefoneRepository implements PanacheRepository<Telefone> {
     public List<Telefone> findByCodigoArea(String codigoArea){
         if (codigoArea == null)
             return null;
-        return find("UPPER(codigoArea) LIKE ?1 ", "%"+codigoArea.toUpperCase()+"%").list();
+        return find("UPPER(CodigoArea) LIKE ?1 ", "%"+codigoArea.toUpperCase()+"%").list();
     }
 
     public Telefone findByUsuario(String usuario){

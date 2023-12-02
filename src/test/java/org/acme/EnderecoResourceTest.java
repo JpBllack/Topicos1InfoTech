@@ -4,13 +4,13 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.acme.dto.AuthUsuarioDTO;
 import org.acme.dto.EnderecoDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class EnderecoResourceTest {
 
     private String token;
@@ -31,6 +31,7 @@ public class EnderecoResourceTest {
     }
 
     @Test
+    @Order(1)
     public void getAllTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
@@ -40,6 +41,7 @@ public class EnderecoResourceTest {
     }
 
     @Test
+    @Order(2)
     public void getIdTeste() {
         Long testeId = 5L; // Substitua pelo ID de um endereço válido
         given()
@@ -50,6 +52,7 @@ public class EnderecoResourceTest {
     }
 
     @Test
+    @Order(3)
     public void insertTest() {
         String usuarioId = "213sdfdsas-aasd23234"; // Substitua pelo ID do usuário
         EnderecoDTO enderecoDTO = new EnderecoDTO("Rua Exemplo", "123", "Apt 456", "Bairro Exemplo", 1L, "12345-678");
@@ -65,6 +68,7 @@ public class EnderecoResourceTest {
     }
 
     @Test
+    @Order(4)
     public void deleteTest() {
         long testeId = 5L; // Substitua pelo ID de um endereço válido
         given()

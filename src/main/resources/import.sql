@@ -85,9 +85,11 @@ INSERT INTO pagamento (id, pago, valor, tipo) VALUES (3, true, 3900, 'cartao');
 INSERT INTO pagamento (id, pago, valor, tipo) VALUES (4, true, 3900, 'boleto');
 INSERT INTO pagamento (id, pago, valor, tipo) VALUES (5, true, 0000, 'cartao');
 INSERT INTO pagamento (id, pago, valor, tipo) VALUES (6, true, 0000, 'pix');
+INSERT INTO pagamento (id, pago, valor, tipo) VALUES (7, true, 3900, 'teste');
 INSERT INTO boletobancario (banco, numeroBoleto, id) VALUES ('TESTE', 'PARA TESTES', 4);
 INSERT INTO cartaocredito (bandeiraCartao, cvv, numeroCartao ,id) VALUES ('Test', 'ttt','test test test test', 5);
 INSERT INTO pixpagamento (chave, id) VALUES ('tstestestestestestestestestestestestestes', 6);
+INSERT INTO boletobancario (banco, numeroBoleto, id) VALUES ('TESTE', 'PARA TESTES', 7);
 
 
 -- Inserção de dados nas tabelas 'boletobancario', 'cartaocredito', 'pixpagamento'

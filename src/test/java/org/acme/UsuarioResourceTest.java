@@ -10,7 +10,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.*;
 
 @QuarkusTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UsuarioResourceTest {
 
     private String token;
@@ -32,7 +31,6 @@ public class UsuarioResourceTest {
     }
 
     @Test
-    @Order(1)
     public void getAllTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
@@ -43,7 +41,6 @@ public class UsuarioResourceTest {
     }
 
     @Test
-    @Order(2)
     public void getIdTeste() {
         String testeId = "testestestesteste";
         given()
@@ -55,7 +52,6 @@ public class UsuarioResourceTest {
     }
 
     @Test
-    @Order(3)
     public void updateNomeTest() {
         String testeId = "testestestesteste";
         UsuarioUpdateNomeDTO nomeDTO = new UsuarioUpdateNomeDTO("Nome Atualizado");
@@ -69,7 +65,6 @@ public class UsuarioResourceTest {
                 .statusCode(200);
     }
     @Test
-    @Order(4)
     public void updateLoginTest() {
         String testeId = "testestestesteste";
         UsuarioUpdateLoginDTO loginDTO = new UsuarioUpdateLoginDTO("LoginAtualizado");
@@ -84,7 +79,6 @@ public class UsuarioResourceTest {
     }
 
     @Test
-    @Order(5)
     public void updateSenhaTest() {
         String testeId = "testestestesteste";
         UsuarioUpdateSenhaDTO senhaDTO = new UsuarioUpdateSenhaDTO("112233");
@@ -98,7 +92,6 @@ public class UsuarioResourceTest {
                 .statusCode(200);
     }
     @Test
-    @Order(6)
     public void promoverAdminTest() {
         String testeId = "testestestesteste2";
 
@@ -111,7 +104,6 @@ public class UsuarioResourceTest {
 
 
     @Test
-    @Order(7)
     public void insertTeste() {
         UsuarioDTO usuarioDTO = new UsuarioDTO("12345678901", "Novo Usuario", "novo@usuario.com", "novousuario", "senha123");
 
@@ -127,7 +119,6 @@ public class UsuarioResourceTest {
     }
 
     @Test
-    @Order(8)
     public void getCpfTest() {
         String testeCpf = "45678901234"; // Substitua pelo CPF de um usuário válido
         given()
@@ -139,7 +130,6 @@ public class UsuarioResourceTest {
 
 
     @Test
-    @Order(9)
     public void deleteTeste() {
         String testeId = "testestestesteste";
         given()

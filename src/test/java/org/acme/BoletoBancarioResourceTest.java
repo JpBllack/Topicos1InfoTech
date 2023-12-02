@@ -3,8 +3,7 @@ package org.acme;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.acme.dto.BoletoBancarioDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
@@ -12,6 +11,7 @@ import static org.hamcrest.CoreMatchers.is;
 import org.acme.dto.AuthUsuarioDTO;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BoletoBancarioResourceTest {
 
     private String token;
@@ -32,6 +32,7 @@ public class BoletoBancarioResourceTest {
     }
 
     @Test
+    @Order(1)
     public void getAllTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
@@ -41,6 +42,7 @@ public class BoletoBancarioResourceTest {
     }
 
     @Test
+    @Order(2)
     public void getIdTeste() {
         Long testeId = 4L; // Substitua pelo ID de um boleto válido
         given()
@@ -51,6 +53,7 @@ public class BoletoBancarioResourceTest {
     }
 
     @Test
+    @Order(3)
     public void insertTest() {
         BoletoBancarioDTO boletoBancarioDTO = new BoletoBancarioDTO("Banco Teste", "12345", 100.0);
 
@@ -64,6 +67,7 @@ public class BoletoBancarioResourceTest {
     }
 
     @Test
+    @Order(4)
     public void deleteTest() {
         Long testeId = 4L; // Substitua pelo ID de um boleto válido
         given()

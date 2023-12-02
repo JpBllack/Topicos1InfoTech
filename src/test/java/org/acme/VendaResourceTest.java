@@ -2,9 +2,14 @@ package org.acme;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
-import org.acme.dto.*;
+import org.acme.dto.AuthUsuarioDTO;
+import org.acme.dto.VendaPagamentoDTO;
+import org.acme.dto.VendaDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +17,7 @@ import java.util.List;
 import static io.restassured.RestAssured.given;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class VendaResourceTest {
 
     private String token;
@@ -32,6 +38,7 @@ public class VendaResourceTest {
     }
 
     @Test
+    @Order(1)
     public void getAllTest() {
         given()
                 .header("Authorization", "Bearer " + token)
@@ -41,6 +48,7 @@ public class VendaResourceTest {
     }
 
     @Test
+    @Order(2)
     public void getIdTest() {
         Long vendaId = 1L; // Substituir pelo ID de uma venda válida
         given()
@@ -51,6 +59,7 @@ public class VendaResourceTest {
     }
 
     @Test
+    @Order(3)
     public void insertPagamentoTest() {
         VendaPagamentoDTO vendaPagamentoDTO = new VendaPagamentoDTO(4L, 4L);
         given()
@@ -63,6 +72,7 @@ public class VendaResourceTest {
     }
 
     @Test
+    @Order(4)
     public void insertVendaTest() {
         List<Long> lista = new ArrayList<>();
         VendaDTO vendaDTO = new VendaDTO(lista, 1L);
@@ -74,6 +84,4 @@ public class VendaResourceTest {
                 .then()
                 .statusCode(200);
     }
-
-
 }

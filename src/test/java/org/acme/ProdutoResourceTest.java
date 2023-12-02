@@ -31,7 +31,7 @@ public class ProdutoResourceTest {
     }
 
     @Test
-    @Order(1)
+    @Order(2)
     public void getAllTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
@@ -41,7 +41,7 @@ public class ProdutoResourceTest {
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     public void getIdTeste() {
         Long testeId = 4L; // Substitua pelo ID de um produto válido
         given()
@@ -52,7 +52,7 @@ public class ProdutoResourceTest {
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     public void getNomeTeste() {
         String nome = "Iphone"; // Substitua pelo nome de um produto válido
         given()
@@ -63,7 +63,7 @@ public class ProdutoResourceTest {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void insertTest() {
         ProdutoDTO dto = new ProdutoDTO("Nome do Produto", "Descrição do Produto", 100.0, 10, 1L); // Substitua com dados válidos
 
@@ -77,7 +77,7 @@ public class ProdutoResourceTest {
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     public void retiraEstoqueTeste() {
         Long testeId = 4L; // Substitua pelo ID de um produto válido
         int quantidade = 5; // Quantidade a ser retirada
@@ -90,7 +90,7 @@ public class ProdutoResourceTest {
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     public void adicionaEstoqueTeste() {
         Long testeId = 4L; // Substitua pelo ID de um produto válido
         int quantidade = 10; // Quantidade a ser adicionada
@@ -103,7 +103,7 @@ public class ProdutoResourceTest {
     }
 
     @Test
-    @Order(7)
+    @Order(8)
     public void updateTest() {
         Long testeId = 4L; // Substitua pelo ID de um produto válido
         ProdutoDTO dto = new ProdutoDTO("Nome Atualizado", "Descrição Atualizada", 150.0, 5, 1L); // Substitua com dados válidos
@@ -116,8 +116,9 @@ public class ProdutoResourceTest {
                 .then()
                 .statusCode(200);
     }
+
     @Test
-    @Order(8)
+    @Order(9)
     public void deleteTest() {
         Long testeId = 4L; // Substitua pelo ID de um produto válido
         given()
@@ -126,7 +127,6 @@ public class ProdutoResourceTest {
                 .then()
                 .statusCode(200);
     }
-
 
     // Testes adicionais para os outros endpoints podem ser adicionados aqui
 }

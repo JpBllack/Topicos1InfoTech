@@ -4,13 +4,13 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.acme.dto.AuthUsuarioDTO;
 import org.acme.dto.CidadeDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CidadeResourceTest {
 
     private String token;
@@ -31,6 +31,7 @@ public class CidadeResourceTest {
     }
 
     @Test
+    @Order(1)
     public void getAllTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
@@ -40,6 +41,7 @@ public class CidadeResourceTest {
     }
 
     @Test
+    @Order(2)
     public void getIdTeste() {
         Long testeId = 4L; // Substitua pelo ID de uma cidade válida
         given()
@@ -50,6 +52,7 @@ public class CidadeResourceTest {
     }
 
     @Test
+    @Order(3)
     public void insertTest() {
         CidadeDTO cidadeDTO = new CidadeDTO("NovaCidade", 1L); // Substitua 1L pelo ID de um estado válido
 
@@ -63,6 +66,7 @@ public class CidadeResourceTest {
     }
 
     @Test
+    @Order(4)
     public void updateTest() {
         Long testeId = 4L; // Substitua pelo ID de uma cidade válida
         CidadeDTO cidadeDTO = new CidadeDTO("CidadeAtualizada", 1L); // Substitua 1L pelo ID de um estado válido
@@ -78,6 +82,7 @@ public class CidadeResourceTest {
     }
 
     @Test
+    @Order(5)
     public void deleteTest() {
         long testeId = 4L; // Substitua pelo ID de uma cidade válida
         given()

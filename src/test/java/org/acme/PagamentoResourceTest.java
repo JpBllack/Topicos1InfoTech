@@ -4,13 +4,13 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.acme.dto.AuthUsuarioDTO;
 import org.acme.dto.PagamentoDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PagamentoResourceTest {
 
     private String token;
@@ -31,6 +31,7 @@ public class PagamentoResourceTest {
     }
 
     @Test
+    @Order(1)
     public void getAllTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
@@ -40,8 +41,9 @@ public class PagamentoResourceTest {
     }
 
     @Test
+    @Order(2)
     public void getIdTeste() {
-        Long testeId = 4L; // Substitua pelo ID de um pagamento válido
+        Long testeId = 7L; // Substitua pelo ID de um pagamento válido
         given()
                 .header("Authorization", "Bearer " + token)
                 .when().get("/pagamento/" + testeId)
@@ -50,6 +52,7 @@ public class PagamentoResourceTest {
     }
 
     @Test
+    @Order(3)
     public void getTipoTeste() {
         String tipoPagamento = "boleto"; // Substitua pelo tipo de pagamento válido
         given()
@@ -60,6 +63,7 @@ public class PagamentoResourceTest {
     }
 
     @Test
+    @Order(4)
     public void insertTest() {
         PagamentoDTO pagamentoDTO = new PagamentoDTO("Cartao", 100.0); // Substitua com dados válidos
 
@@ -73,8 +77,9 @@ public class PagamentoResourceTest {
     }
 
     @Test
+    @Order(5)
     public void deleteTest() {
-        Long testeId = 4L; // Substitua pelo ID de um pagamento válido
+        Long testeId = 7L; // Substitua pelo ID de um pagamento válido
         given()
                 .header("Authorization", "Bearer " + token)
                 .when().delete("/pagamento/" + testeId)

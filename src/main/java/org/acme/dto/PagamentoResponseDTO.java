@@ -9,6 +9,7 @@ public record PagamentoResponseDTO(
         Boolean pago
 ) {
     public  PagamentoResponseDTO(Pagamento p){
+
         this(p.getId(), p.getTipo(), p.getValor(), p.getPago());
     }
 }

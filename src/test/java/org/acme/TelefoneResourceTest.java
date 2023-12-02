@@ -3,14 +3,19 @@ package org.acme;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.acme.dto.AuthUsuarioDTO;
+import org.acme.dto.CategoriaDTO;
 import org.acme.dto.TelefoneDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TelefoneResourceTest {
 
     private String token;
@@ -31,6 +36,7 @@ public class TelefoneResourceTest {
     }
 
     @Test
+    @Order(2)
     public void getAllTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
@@ -40,6 +46,7 @@ public class TelefoneResourceTest {
     }
 
     @Test
+    @Order(3)
     public void getIdTeste() {
         Long testeId = 1L; // Substitua pelo ID de um telefone válido
         given()
@@ -50,8 +57,9 @@ public class TelefoneResourceTest {
     }
 
     @Test
+    @Order(4)
     public void getCodigoAreaTeste() {
-        String codigoArea = "011"; // Substitua pelo código de área válido
+        String codigoArea = "63"; // Substitua pelo código de área válido
         given()
                 .header("Authorization", "Bearer " + token)
                 .when().get("/telefone/codigo/" + codigoArea)
@@ -60,6 +68,7 @@ public class TelefoneResourceTest {
     }
 
     @Test
+    @Order(5)
     public void insertTest() {
         TelefoneDTO dto = new TelefoneDTO("011", "12345678"); // Substitua com dados válidos
 
@@ -67,12 +76,13 @@ public class TelefoneResourceTest {
                 .header("Authorization", "Bearer " + token)
                 .contentType("application/json")
                 .body(dto)
-                .when().post("/telefone")
+                .when().post("/telefone/testestestesteste")
                 .then()
                 .statusCode(200);
     }
 
     @Test
+    @Order(7)
     public void deleteTest() {
         Long testeId = 1L; // Substitua pelo ID de um telefone válido
         given()
@@ -83,6 +93,7 @@ public class TelefoneResourceTest {
     }
 
     @Test
+    @Order(6)
     public void updateTest() {
         Long testeId = 1L; // Substitua pelo ID de um telefone válido
         TelefoneDTO dto = new TelefoneDTO("021", "87654321"); // Substitua com dados válidos

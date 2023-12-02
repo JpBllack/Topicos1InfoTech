@@ -4,12 +4,12 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.acme.dto.AuthUsuarioDTO;
 import org.acme.dto.CategoriaDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CategoriaResourceTest {
 
     private String token;
@@ -30,6 +30,7 @@ public class CategoriaResourceTest {
     }
 
     @Test
+    @Order(1)
     public void getAllTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
@@ -39,6 +40,7 @@ public class CategoriaResourceTest {
     }
 
     @Test
+    @Order(3)
     public void getIdTeste() {
         Long testeId = 1L; // Substitua pelo ID de uma categoria válida
         given()
@@ -49,6 +51,7 @@ public class CategoriaResourceTest {
     }
 
     @Test
+    @Order(2)
     public void getNomeTeste() {
         String nomeTeste = "Smartphone"; // Substitua pelo nome de uma categoria válida
         given()
@@ -59,6 +62,7 @@ public class CategoriaResourceTest {
     }
 
     @Test
+    @Order(4)
     public void insertTest() {
         CategoriaDTO categoriaDTO = new CategoriaDTO("NovaCategoria");
 
@@ -72,6 +76,7 @@ public class CategoriaResourceTest {
     }
 
     @Test
+    @Order(5)
     public void deleteTest() {
         long testeId = 5L; // Substitua pelo ID de uma categoria válida
         given()

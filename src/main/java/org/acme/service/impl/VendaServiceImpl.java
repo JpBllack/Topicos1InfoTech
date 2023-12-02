@@ -41,9 +41,10 @@ public class VendaServiceImpl implements VendaService {
     public List<VendaResponseDTO> getAll() {
         try {
             LOG.info("Requisição getAll()");
-            return repository.findAll().stream()
+            List<VendaResponseDTO> v = repository.findAll().stream()
                     .map(VendaResponseDTO::new)
                     .collect(Collectors.toList());
+            return v;
 
         }catch (Exception e){
             LOG.error("Erro ao rodar Requisição getAll()");

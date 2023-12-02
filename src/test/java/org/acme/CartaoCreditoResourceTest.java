@@ -4,12 +4,12 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.acme.dto.AuthUsuarioDTO;
 import org.acme.dto.CartaoCreditoDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CartaoCreditoResourceTest {
 
     private String token;
@@ -30,6 +30,7 @@ public class CartaoCreditoResourceTest {
     }
 
     @Test
+    @Order(1)
     public void getAllTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
@@ -39,6 +40,7 @@ public class CartaoCreditoResourceTest {
     }
 
     @Test
+    @Order(2)
     public void getIdTeste() {
         Long testeId = 5L; // Substitua pelo ID de um cartão válido
         given()
@@ -49,6 +51,7 @@ public class CartaoCreditoResourceTest {
     }
 
     @Test
+    @Order(3)
     public void insertTest() {
         CartaoCreditoDTO cartaoCreditoDTO = new CartaoCreditoDTO("1234567890123456", "12/24", "123", "Visa", 500.0);
 
@@ -62,6 +65,7 @@ public class CartaoCreditoResourceTest {
     }
 
     @Test
+    @Order(4)
     public void deleteTest() {
         Long testeId = 5L; // Substitua pelo ID de um cartão válido
         given()

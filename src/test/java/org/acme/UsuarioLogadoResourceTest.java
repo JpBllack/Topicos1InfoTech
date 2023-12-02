@@ -9,7 +9,6 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UsuarioLogadoResourceTest {
 
     private String token;
@@ -30,9 +29,7 @@ public class UsuarioLogadoResourceTest {
         token = response.header("Authorization");
     }
 
-    @Test
-    @Order(1)
-    public void getPerfilUsuarioLogadoTeste() {
+    @Test    public void getPerfilUsuarioLogadoTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
                 .when().get("/usuariologado")
@@ -40,9 +37,7 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test
-    @Order(2)
-    public void getVendasTeste() {
+    @Test    public void getVendasTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
                 .when().get("/usuariologado/venda")
@@ -50,9 +45,7 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test
-    @Order(3)
-    public void updateSenhaTeste() {
+    @Test    public void updateSenhaTeste() {
         UsuarioLogadoMudarSenhaDTO senhaDTO = new UsuarioLogadoMudarSenhaDTO( "123", "1234");
 
         given()
@@ -64,9 +57,7 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test
-    @Order(4)
-    public void updateLoginTeste() {
+    @Test    public void updateLoginTeste() {
         UsuarioUpdateLoginDTO loginDTO = new UsuarioUpdateLoginDTO("novoLogin");
 
         given()
@@ -78,9 +69,7 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test
-    @Order(5)
-    public void updateNomeTeste() {
+    @Test    public void updateNomeTeste() {
         UsuarioUpdateNomeDTO nomeDTO = new UsuarioUpdateNomeDTO("Novo Nome");
 
         given()
@@ -92,9 +81,7 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test
-    @Order(6)
-    public void updateEmailTeste() {
+    @Test    public void updateEmailTeste() {
         UsuarioUpdateEmailDTO emailDTO = new UsuarioUpdateEmailDTO("novoemail@example.com");
 
         given()
@@ -106,9 +93,7 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test
-    @Order(7)
-    public void insertTelefoneTeste() {
+    @Test    public void insertTelefoneTeste() {
 
 
         AuthUsuarioDTO auth2 = new AuthUsuarioDTO("teste@gmail.com", "123");
@@ -134,9 +119,7 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test
-    @Order(8)
-    public void updateTelefoneTeste() {
+    @Test    public void updateTelefoneTeste() {
         TelefoneDTO dto = new TelefoneDTO("63", "984555244");
 
         given()
@@ -148,9 +131,7 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test
-    @Order(9)
-    public void insertEnderecoTeste() {
+    @Test    public void insertEnderecoTeste() {
         EnderecoDTO enderecoDTO = new EnderecoDTO("Rua Nova", "123", "Apto 01", "Bairro", 1L, "12345-678");
 
         given()
@@ -163,7 +144,6 @@ public class UsuarioLogadoResourceTest {
     }
 
     @Test
-    @Order(10)
     public void updateEnderecoTeste() {
         EnderecoDTO enderecoDTO = new EnderecoDTO("Rua Nova", "123", "Apto 01", "Bairro", 1L, "12345-678");
 
@@ -177,7 +157,6 @@ public class UsuarioLogadoResourceTest {
     }
 
     @Test
-    @Order(11)
     public void deleteOnTeste() {
         AuthUsuarioDTO auth2 = new AuthUsuarioDTO("testeste2", "123");
 

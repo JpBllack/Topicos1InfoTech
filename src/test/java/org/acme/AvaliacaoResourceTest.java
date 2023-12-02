@@ -3,14 +3,14 @@ package org.acme;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.response.Response;
 import org.acme.dto.AvaliacaoDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static io.restassured.RestAssured.given;
 
 import org.acme.dto.AuthUsuarioDTO;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AvaliacaoResourceTest {
 
     private String token;
@@ -31,6 +31,7 @@ public class AvaliacaoResourceTest {
     }
 
     @Test
+    @Order(1)
     public void getAllTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
@@ -40,6 +41,7 @@ public class AvaliacaoResourceTest {
     }
 
     @Test
+    @Order(2)
     public void getIdTeste() {
         Long testeId = 1L; // Substitua pelo ID de uma avaliação válida
         given()
@@ -50,6 +52,7 @@ public class AvaliacaoResourceTest {
     }
 
     @Test
+    @Order(3)
     public void insertTest() {
         AvaliacaoDTO avaliacaoDTO = new AvaliacaoDTO(5, "Muito bom");
 
@@ -63,6 +66,7 @@ public class AvaliacaoResourceTest {
     }
 
     @Test
+    @Order(4)
     public void deleteTest() {
         long testeId = 1L; // Substitua pelo ID de uma avaliação válida
         given()
