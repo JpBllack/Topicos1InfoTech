@@ -17,7 +17,7 @@ public class UsuarioResourceTest {
     @BeforeEach
     public void setAuth() {
         // Substitua pelas credenciais de um usuário admin válido
-        AuthUsuarioDTO auth = new AuthUsuarioDTO("joaojoao", "123");
+        AuthUsuarioDTO auth = new AuthUsuarioDTO("teste@gmail.com", "123");
 
         Response response = given()
                 .contentType("application/json")

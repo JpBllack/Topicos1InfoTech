@@ -9,6 +9,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UsuarioLogadoResourceTest {
 
     private String token;
@@ -16,7 +17,7 @@ public class UsuarioLogadoResourceTest {
 
     @BeforeEach
     public void setAuth() {
-        AuthUsuarioDTO auth = new AuthUsuarioDTO("joaojoao", "123");
+        AuthUsuarioDTO auth = new AuthUsuarioDTO("carlacarla", "123");
 
         Response response = given()
                 .contentType("application/json")
@@ -29,7 +30,9 @@ public class UsuarioLogadoResourceTest {
         token = response.header("Authorization");
     }
 
-    @Test    public void getPerfilUsuarioLogadoTeste() {
+    @Test
+    @Order(1)
+    public void getPerfilUsuarioLogadoTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
                 .when().get("/usuariologado")
@@ -37,7 +40,9 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test    public void getVendasTeste() {
+    @Test
+    @Order(2)
+    public void getVendasTeste() {
         given()
                 .header("Authorization", "Bearer " + token)
                 .when().get("/usuariologado/venda")
@@ -45,7 +50,9 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test    public void updateSenhaTeste() {
+    @Test
+    @Order(4)
+    public void updateSenhaTeste() {
         UsuarioLogadoMudarSenhaDTO senhaDTO = new UsuarioLogadoMudarSenhaDTO( "123", "1234");
 
         given()
@@ -57,7 +64,9 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test    public void updateLoginTeste() {
+    @Test
+    @Order(3)
+    public void updateLoginTeste() {
         UsuarioUpdateLoginDTO loginDTO = new UsuarioUpdateLoginDTO("novoLogin");
 
         given()
@@ -69,7 +78,9 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test    public void updateNomeTeste() {
+    @Test
+    @Order(5)
+    public void updateNomeTeste() {
         UsuarioUpdateNomeDTO nomeDTO = new UsuarioUpdateNomeDTO("Novo Nome");
 
         given()
@@ -81,7 +92,9 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test    public void updateEmailTeste() {
+    @Test
+    @Order(6)
+    public void updateEmailTeste() {
         UsuarioUpdateEmailDTO emailDTO = new UsuarioUpdateEmailDTO("novoemail@example.com");
 
         given()
@@ -93,25 +106,14 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test    public void insertTelefoneTeste() {
-
-
-        AuthUsuarioDTO auth2 = new AuthUsuarioDTO("teste@gmail.com", "123");
-
-        Response response = given()
-                .contentType("application/json")
-                .body(auth2)
-                .when().post("/auth")
-                .then()
-                .statusCode(200)
-                .extract().response();
-
-        token2 = response.header("Authorization");
+    @Test
+    @Order(7)
+    public void insertTelefoneTeste() {
 
         TelefoneDTO telefoneDTO = new TelefoneDTO("11", "123456789");
 
         given()
-                .header("Authorization", "Bearer " + token2)
+                .header("Authorization", "Bearer " + token)
                 .contentType("application/json")
                 .body(telefoneDTO)
                 .when().patch("/usuariologado/insert/telefone")
@@ -119,7 +121,9 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test    public void updateTelefoneTeste() {
+    @Test
+    @Order(8)
+    public void updateTelefoneTeste() {
         TelefoneDTO dto = new TelefoneDTO("63", "984555244");
 
         given()
@@ -131,7 +135,9 @@ public class UsuarioLogadoResourceTest {
                 .statusCode(200);
     }
 
-    @Test    public void insertEnderecoTeste() {
+    @Test
+    @Order(9)
+    public void insertEnderecoTeste() {
         EnderecoDTO enderecoDTO = new EnderecoDTO("Rua Nova", "123", "Apto 01", "Bairro", 1L, "12345-678");
 
         given()
@@ -144,6 +150,7 @@ public class UsuarioLogadoResourceTest {
     }
 
     @Test
+    @Order(10)
     public void updateEnderecoTeste() {
         EnderecoDTO enderecoDTO = new EnderecoDTO("Rua Nova", "123", "Apto 01", "Bairro", 1L, "12345-678");
 
@@ -157,6 +164,7 @@ public class UsuarioLogadoResourceTest {
     }
 
     @Test
+    @Order(11)
     public void deleteOnTeste() {
         AuthUsuarioDTO auth2 = new AuthUsuarioDTO("testeste2", "123");
 

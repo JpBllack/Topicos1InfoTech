@@ -16,6 +16,8 @@ import org.acme.service.UsuarioLogadoService;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -81,7 +83,8 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
             Usuario entity = usuarioRepository.findById(jsonWebToken.getSubject());
 
             entity.setLogin(login.login());
-            return new UsuarioResponseDTO(entity);
+            UsuarioResponseDTO u = new UsuarioResponseDTO(entity);
+            return u;
         } catch (Exception e) {
             LOG.error("Requisição updateLogin()");
             return null;
@@ -97,7 +100,9 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
             Usuario entity = usuarioRepository.findById(jsonWebToken.getSubject());
 
             entity.setNome(nome.nome());
-            return Response.ok().build();
+            UsuarioResponseDTO u = new UsuarioResponseDTO(entity);
+
+            return Response.ok(u).build();
         } catch (Exception e) {
             LOG.error("Requisição updateNome()");
             return Response.notModified(e.getMessage()).build();
@@ -113,7 +118,8 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
             Usuario entity = usuarioRepository.findById(jsonWebToken.getSubject());
 
             entity.setEmail(dto.email());
-            return Response.ok().build();
+            UsuarioResponseDTO u = new UsuarioResponseDTO(entity);
+            return Response.ok(u).build();
         } catch (Exception e) {
             LOG.error("Requisição updateEmail()");
             return Response.notModified(e.getMessage()).build();
@@ -143,7 +149,8 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
             }
             t.get().setCodigoArea(dto.codigoArea());
             t.get().setNumero(dto.numero());
-            return Response.ok().build();
+            TelefoneResponseDTO telefoneResponseDTO = new TelefoneResponseDTO(t.get());
+            return Response.ok(telefoneResponseDTO).build();
         } catch (Exception e) {
             LOG.error("Requisição updateTelefone()");
             return Response.notModified(e.getMessage()).build();
@@ -176,10 +183,11 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
             if(dto.logradouro() != null){
                 e.setLogradouro(dto.logradouro());
             }
-            return Response.ok().build();
-        }catch (Exception e){
+            EnderecoResponseDTO enderecoResponseDTO = new EnderecoResponseDTO(e);
+            return Response.ok(enderecoResponseDTO).build();
+        }catch (Exception er){
             LOG.error("Requisição updateEndereco()");
-            return Response.notModified(e.getMessage()).build();
+            return Response.notModified(er.getMessage()).build();
         }
 
     }
@@ -190,7 +198,8 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
             LOG.info("Requisição getPerfilUsuarioLogado()");
             Usuario entity = new Usuario();
             entity = usuarioRepository.findById(jsonWebToken.getSubject());
-            return new UsuarioResponseDTO(entity);
+            UsuarioResponseDTO u = new UsuarioResponseDTO(entity);
+            return u;
 
         }catch (Exception e){
             LOG.error("Erro ao rodar Requisição getPerfilUsuarioLogado()");
@@ -241,7 +250,9 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
             LOG.info("Requisição getVendas()");
 
             Usuario entity = usuarioRepository.findById(jsonWebToken.getSubject());
-            return Response.ok(vendaRepository.findAll().stream().filter(v -> v.getEndereco().getUsuario().getId() == entity.getId()).map(VendaResponseDTO::new).collect(Collectors.toList())).build();
+            List<VendaResponseDTO> vendaResponseDTOS = new ArrayList<>();
+            vendaResponseDTOS = vendaRepository.findAll().stream().filter(v -> v.getEndereco().getUsuario().getId() == entity.getId()).map(VendaResponseDTO::new).collect(Collectors.toList());
+            return Response.ok(vendaResponseDTOS).build();
 
         }catch (Exception e){
 
@@ -258,7 +269,7 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
             LOG.info("Requisicao delete()");
 
             usuarioRepository.deleteById(jsonWebToken.getSubject());
-            return Response.ok().build();
+            return Response.ok("Usuario excluido").build();
         } catch (Exception e) {
             LOG.error("erro na requisicao relete() - " + e.getMessage());
             return Response.notModified("Usuario não excluido - " + e.toString()).build();

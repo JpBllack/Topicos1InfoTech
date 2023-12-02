@@ -50,7 +50,7 @@ public class VendaResourceTest {
     @Test
     @Order(2)
     public void getIdTest() {
-        Long vendaId = 1L; // Substituir pelo ID de uma venda válida
+        long vendaId = 1L;
         given()
                 .header("Authorization", "Bearer " + token)
                 .when().get("/venda/" + vendaId)
