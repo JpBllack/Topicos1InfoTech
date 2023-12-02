@@ -26,7 +26,7 @@ public class CartaoCreditoResource {
     @GET
     @RolesAllowed({"Admin"})
     @Path("/{id}")
-    public CartaoCreditoResponseDTO getId(@PathParam("id") long id){
+    public CartaoCreditoResponseDTO getId(@PathParam("id") Long id){
         return service.getId(id);
     }
 
@@ -38,8 +38,8 @@ public class CartaoCreditoResource {
 
     @DELETE
     @RolesAllowed({"Admin"})
-    @Path("/{id}")
-    public Response delete(@PathParam("id") long id){
+    @Path("/delete/{id}")
+    public Response delete(@PathParam("id") Long id){
         return service.delete(id);
     }
 }

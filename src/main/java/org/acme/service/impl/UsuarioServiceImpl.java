@@ -24,9 +24,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     UsuarioRepository repository;
 
     @Inject
-    UsuarioService service;
-
-    @Inject
     HashService hash;
 
     @Override
@@ -88,7 +85,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioResponseDTO updateNome(String id, UsuarioUpdateNomeDTO nome) {
         Usuario u = new Usuario();
         u = repository.findById(id);
-        u.setEmail(nome.nome());
+        u.setNome(nome.nome());
         return new UsuarioResponseDTO(u);
     }
 
@@ -97,25 +94,33 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioResponseDTO updateLogin(String id, UsuarioUpdateLoginDTO login) {
         Usuario u = new Usuario();
         u = repository.findById(id);
-        u.setEmail(login.login());
+        u.setLogin(login.login());
         return new UsuarioResponseDTO(u);
     }
 
     @Transactional
     @Override
-    public UsuarioResponseDTO updateSenha(MudarSenhaDTO senha) {
+    public UsuarioResponseDTO updateSenha(String id, UsuarioUpdateSenhaDTO senha) {
         Usuario u = new Usuario();
-        u = service.findByLoginAndSenha(senha.login(), senha.senhaAntiga());
-        u.setSenha(hash.getHashSenha(senha.novaSenha()));
+        u = repository.findById(id);
+        u.setSenha(hash.getHashSenha(senha.senha()));
         return new UsuarioResponseDTO(u);
     }
 
     @Override
     @Transactional
     public Response promoverAdmin(String id) {
-        Usuario u = repository.findById(id);
-        u.getPerfis().add(Perfil.ADMIN);
-        return Response.ok(new UsuarioResponseDTO(u)).build();
+        try{
+            Usuario u = repository.findById(id);
+            if(u.getPerfis().contains(Perfil.ADMIN)){
+                return Response.ok("Usuario ja era admin").build();
+            }
+            u.getPerfis().add(Perfil.ADMIN);
+            return Response.ok(new UsuarioResponseDTO(u)).build();
+        }catch (Exception e){
+            return Response.notModified(e.getMessage()).build();
+        }
+
     }
 
     @Transactional

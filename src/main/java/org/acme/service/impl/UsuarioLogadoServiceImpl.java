@@ -16,6 +16,8 @@ import org.acme.service.UsuarioLogadoService;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -52,18 +54,21 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
 
     @Transactional
     @Override
-    public UsuarioResponseDTO updateSenha(MudarSenhaDTO senha) {
+    public Response updateSenha(UsuarioLogadoMudarSenhaDTO senha) {
         try {
 
+            LOG.info("Requisição updateSenha()");
             Usuario entity = usuarioRepository.findById(jsonWebToken.getSubject());
-
-            if(hash.getHashSenha(senha.senhaAntiga()) != entity.getSenha())
+            String has = hash.getHashSenha(senha.senhaAntiga());
+            if(Objects.equals(has, entity.getSenha())) {
+                entity.setSenha(hash.getHashSenha(senha.novaSenha()));
+                return Response.ok(new UsuarioResponseDTO(entity)).build();
+            }
+            else {
                 throw new Exception("Senha anterior Incorreta");
-
-            entity.setSenha(hash.getHashSenha(senha.novaSenha()));
-            return new UsuarioResponseDTO(entity);
-        } catch (Exception e) {
-            return null;
+            }} catch (Exception e) {
+            LOG.error("Requisição updateSenha()");
+            return Response.notModified(e.getMessage()).build();
         }
     }
 
@@ -72,46 +77,83 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
     public UsuarioResponseDTO updateLogin(UsuarioUpdateLoginDTO login) {
         try {
 
+            LOG.info("Requisição updateLogin()");
             Usuario entity = usuarioRepository.findById(jsonWebToken.getSubject());
 
             entity.setLogin(login.login());
             return new UsuarioResponseDTO(entity);
         } catch (Exception e) {
+            LOG.error("Requisição updateLogin()");
             return null;
         }
     }
 
     @Transactional
     @Override
-    public UsuarioResponseDTO updateNome(UsuarioUpdateNomeDTO nome) {
+    public Response updateNome(UsuarioUpdateNomeDTO nome) {
         try {
+            LOG.info("Requisição updateNome()");
 
             Usuario entity = usuarioRepository.findById(jsonWebToken.getSubject());
 
             entity.setNome(nome.nome());
-            return new UsuarioResponseDTO(entity);
+            return Response.ok(new UsuarioResponseDTO(entity)).build();
         } catch (Exception e) {
-            return null;
+            LOG.error("Requisição updateNome()");
+            return Response.notModified(e.getMessage()).build();
         }
     }
 
     @Transactional
     @Override
-    public UsuarioResponseDTO updateEmail(UsuarioUpdateEmailDTO dto) {
+    public Response updateEmail(UsuarioUpdateEmailDTO dto) {
         try {
+            LOG.info("Requisição updateEmail()");
 
             Usuario entity = usuarioRepository.findById(jsonWebToken.getSubject());
 
             entity.setEmail(dto.email());
-            return new UsuarioResponseDTO(entity);
+            return Response.ok(new UsuarioResponseDTO(entity)).build();
         } catch (Exception e) {
-            return null;
+            LOG.error("Requisição updateEmail()");
+            return Response.notModified(e.getMessage()).build();
+        }
+    }
+    @Transactional
+    @Override
+    public Response updateTelefone(TelefoneDTO dto) {
+        try {
+            LOG.info("Requisição updateTelefone()");
+
+            Usuario entity = usuarioRepository.findById(jsonWebToken.getSubject());
+
+            AtomicReference<Telefone> t = new AtomicReference<>(new Telefone());
+            telefoneRepository.findAll().stream().forEach(tel -> {
+                if(tel.getUsuario().getId() == entity.getId()){
+                    t.set(tel);
+                }
+            });
+            if(t.get() == null){
+                Telefone telefone = new Telefone();
+                telefone.setNumero(dto.numero());
+                telefone.setCodigoArea(dto.codigoArea());
+                telefone.setUsuario(entity);
+                telefoneRepository.persist(telefone);
+                return Response.ok(new TelefoneResponseDTO(telefone)).build();
+            }
+            t.get().setCodigoArea(dto.codigoArea());
+            t.get().setNumero(dto.numero());
+            return Response.ok(new TelefoneResponseDTO(t.get())).build();
+        } catch (Exception e) {
+            LOG.error("Requisição updateTelefone()");
+            return Response.notModified(e.getMessage()).build();
         }
     }
 
     @Override
     public Response updateEndereco(Long id, EnderecoDTO dto) {
         try {
+            LOG.info("Requisição updateEndereco()");
             Endereco e = enderecoRepository.findById(id);
             if(dto == null){
                 throw new Exception("DTO vazio!!");
@@ -136,6 +178,7 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
             }
             return Response.ok(new EnderecoResponseDTO(e)).build();
         }catch (Exception e){
+            LOG.error("Requisição updateEndereco()");
             return Response.notModified(e.getMessage()).build();
         }
 
@@ -213,9 +256,8 @@ public class UsuarioLogadoServiceImpl implements UsuarioLogadoService {
     public Response deleteOn() {
         try {
             LOG.info("Requisicao delete()");
-            Usuario entity = usuarioRepository.findById(jsonWebToken.getSubject());
 
-            usuarioRepository.delete(entity);
+            usuarioRepository.deleteById(jsonWebToken.getSubject());
             return Response.ok().build();
         } catch (Exception e) {
             LOG.error("erro na requisicao relete() - " + e.getMessage());

@@ -14,4 +14,10 @@ public class TelefoneRepository implements PanacheRepository<Telefone> {
             return null;
         return find("UPPER(codigoArea) LIKE ?1 ", "%"+codigoArea.toUpperCase()+"%").list();
     }
+
+    public Telefone findByUsuario(String usuario){
+        if (usuario == null)
+            return null;
+        return find("UPPER(telefone_usuario) LIKE ?1 ", "%"+usuario.toUpperCase()+"%").firstResult();
+    }
 }

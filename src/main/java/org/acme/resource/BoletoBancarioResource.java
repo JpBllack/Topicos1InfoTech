@@ -39,8 +39,8 @@ public class BoletoBancarioResource {
 
     @DELETE
     @RolesAllowed({"Admin"})
-    @Path("/{id}")
-    public Response delete(@PathParam("id") long id){
+    @Path("/delete/{id}")
+    public Response delete(@PathParam("id") Long id){
         return service.delete(id);
     }
 }

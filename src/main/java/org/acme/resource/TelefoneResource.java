@@ -44,7 +44,7 @@ public class TelefoneResource {
         return service.insert(dto, id);
     }
 
-    @PATCH
+    @PUT
     @RolesAllowed({"Admin"})
     @Path("/{id}")
     public Response update(@PathParam("id") long id, TelefoneDTO dto){

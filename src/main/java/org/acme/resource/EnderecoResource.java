@@ -40,7 +40,7 @@ public class EnderecoResource {
 
     @DELETE
     @RolesAllowed({"Admin"})
-    @Path("/{id}")
+    @Path("/delete/{id}")
     public Response delete(@PathParam("id") long id){
         return service.delete(id);
     }

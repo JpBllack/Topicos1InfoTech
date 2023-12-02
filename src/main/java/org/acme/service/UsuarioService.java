@@ -25,7 +25,7 @@ public interface UsuarioService {
 
     UsuarioResponseDTO updateLogin(String id, UsuarioUpdateLoginDTO login);
 
-    UsuarioResponseDTO updateSenha(MudarSenhaDTO senha);
+    UsuarioResponseDTO updateSenha(String id, UsuarioUpdateSenhaDTO senha);
 
     Response promoverAdmin(String id);
 

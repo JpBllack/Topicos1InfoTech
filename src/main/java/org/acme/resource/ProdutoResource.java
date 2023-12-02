@@ -44,7 +44,7 @@ public class ProdutoResource {
 
     @GET
     @PermitAll
-    @Path("/{nome}")
+    @Path("/nome/{nome}")
     public List<ProdutoResponseDTO> getNome(@PathParam("nome") String nome){
         return service.getNome(nome);
     }
@@ -70,15 +70,15 @@ public class ProdutoResource {
     }
     @PATCH
     @RolesAllowed({"Admin"})
-    @Path("/retiraestoque/{id}")
-    public Response retiraEstoque(@PathParam("id") Long id, int quantidade){
+    @Path("/retiraestoque/{id}/{quantidade}")
+    public Response retiraEstoque(@PathParam("id") Long id, @PathParam("quantidade") int quantidade){
         return service.retiraEstoque(id, quantidade);
     }
 
     @PATCH
     @RolesAllowed({"Admin"})
-    @Path("/adicionaestoque/{id}")
-    public Response adicionaEstoque(@PathParam("id") Long id, int quantidade){
+    @Path("/adicionaestoque/{id}/{quantidade}")
+    public Response adicionaEstoque(@PathParam("id") Long id, @PathParam("quantidade") int quantidade){
         return service.adicionaEstoque(id, quantidade);
     }
 

@@ -45,7 +45,7 @@ public class UsuarioResource {
 
     @DELETE
     @RolesAllowed({"Admin"})
-    @Path("/{id}")
+    @Path("/delete/{id}")
     public Response delete(@PathParam("id") String id){
         return service.delete(id);
     }
@@ -78,8 +78,8 @@ public class UsuarioResource {
     @PATCH
     @RolesAllowed({"Admin"})
     @Path("/update/senha/{id}")
-    public UsuarioResponseDTO updateSenha(MudarSenhaDTO senha){
-        return service.updateSenha(senha);
+    public UsuarioResponseDTO updateSenha(@PathParam("id") String id, UsuarioUpdateSenhaDTO senha){
+        return service.updateSenha(id, senha);
     }
 
     @PATCH

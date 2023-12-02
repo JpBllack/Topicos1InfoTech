@@ -34,7 +34,7 @@ public class UsuarioLogadoResource {
     @PATCH
     @RolesAllowed({"User", "Admin"})
     @Path("/update/senha")
-    public UsuarioResponseDTO updateSenha(MudarSenhaDTO senha) {
+    public Response updateSenha(UsuarioLogadoMudarSenhaDTO senha) {
         return service.updateSenha(senha);
     }
     @PATCH
@@ -46,14 +46,21 @@ public class UsuarioLogadoResource {
     @PATCH
     @RolesAllowed({"User", "Admin"})
     @Path("/update/nome")
-    public UsuarioResponseDTO updateNome(UsuarioUpdateNomeDTO nome) {
+    public Response updateNome(UsuarioUpdateNomeDTO nome) {
         return service.updateNome(nome);
     }
     @PATCH
     @RolesAllowed({"User", "Admin"})
     @Path("/update/email")
-    public UsuarioResponseDTO updateEmail(UsuarioUpdateEmailDTO email) {
+    public Response updateEmail(UsuarioUpdateEmailDTO email) {
         return service.updateEmail(email);
+    }
+
+    @PATCH
+    @RolesAllowed({"User", "Admin"})
+    @Path("/update/telefone")
+    public Response updateTelefone(TelefoneDTO telefoneDTO) {
+        return service.updateTelefone(telefoneDTO);
     }
 
     @PATCH
@@ -79,6 +86,7 @@ public class UsuarioLogadoResource {
 
     @DELETE
     @RolesAllowed({"User", "Admin"})
+    @Path("/deleteon")
     public Response deleteOn() {
         return service.deleteOn();
     }

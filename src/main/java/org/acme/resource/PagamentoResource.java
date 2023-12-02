@@ -32,7 +32,7 @@ public class PagamentoResource {
     }
     @GET
     @RolesAllowed({"Admin"})
-    @Path("/{tipopagamento}")
+    @Path("/tipo/{tipopagamento}")
     public List<PagamentoResponseDTO> getTipo(@PathParam("tipopagamento") String tipopagamento){
         return service.getByTipo(tipopagamento);
     }

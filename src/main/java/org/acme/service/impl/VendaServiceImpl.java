@@ -10,6 +10,7 @@ import org.acme.repository.*;
 import org.acme.service.VendaService;
 import org.jboss.logging.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,15 +72,19 @@ public class VendaServiceImpl implements VendaService {
             LOG.info("Requisição insert()");
 
             Venda venda = new Venda();
-            if(dto.itemVendaList() != null){
-                dto.itemVendaList().stream()
-                        .map(i -> venda.getItemVendaList().add(itemVendaRepository.findById(i)));
-                venda.getItemVendaList().stream().forEach(i -> venda.setValorTotal(venda.getValorTotal() + i.getValorTotal()));
-            }
             venda.setEndereco(enderecoRepository.findById(dto.idEndereco()));
-            repository.persist(venda);
-            return Response.ok(new VendaResponseDTO(venda)).build();
 
+            List<ItemVenda> list = new ArrayList<>();
+            venda.setItemVendaList(list);
+//            dto.itemVendaList().stream()
+//                    .forEach(i -> {
+//                        venda.getItemVendaList().add(itemVendaRepository.findById(i));
+//                    });
+//            venda.getItemVendaList().stream().forEach(i -> {
+//                venda.setValorTotal(venda.getValorTotal() + i.getValorTotal());
+//            });
+            repository.persist(venda);
+            return Response.ok().build();
         }catch (Exception e){
 
             LOG.info("erro ao rodar Requisição insert()");

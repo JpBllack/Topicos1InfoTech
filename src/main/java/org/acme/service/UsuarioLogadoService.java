@@ -6,13 +6,14 @@ import org.acme.dto.*;
 import java.util.List;
 
 public interface UsuarioLogadoService {
-    public UsuarioResponseDTO updateSenha(MudarSenhaDTO senha);
+    public Response updateSenha(UsuarioLogadoMudarSenhaDTO senha);
 
     public UsuarioResponseDTO updateLogin(UsuarioUpdateLoginDTO login);
 
-    public UsuarioResponseDTO updateNome(UsuarioUpdateNomeDTO nome);
+    public Response updateNome(UsuarioUpdateNomeDTO nome);
 
-    public UsuarioResponseDTO updateEmail(UsuarioUpdateEmailDTO email);
+    public Response updateEmail(UsuarioUpdateEmailDTO email);
+    public Response updateTelefone(TelefoneDTO telefoneDTO);
 
     public Response updateEndereco(Long id, EnderecoDTO enderecoDTO);
 
